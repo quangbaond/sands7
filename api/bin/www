@@ -160,7 +160,7 @@ const getGame = async (type = 'sx5d') => {
           for (const item of historyBetResult) {
             const betDataInUser = item.betInUser;
             if (betDataInUser.length > 0) {
-              const settingsData = await settings.findOne({ name: 'game' });
+              const settingsData = await settings.findOne({ name: 'game', userId: item.userID });
               const winnings = checkWin(resultBet, betDataInUser, settingsData.value, type);
 
               if (winnings.length > 0) {
@@ -237,7 +237,7 @@ const createSession = async (type = 'sx5d') => {
   sessions.push(session);
   getGame(type);
 }
-// createSession('sx5d');
+createSession('sx5d');
 // createSession('xs2');
 // createSession('veso');
 // createSession('mayman');

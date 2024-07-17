@@ -1,12 +1,13 @@
 <script setup>
 import { getStorage } from '@/common'
-import { onMounted, watch } from 'vue'
-import { formatCurrency, cskh } from '../common';
+import { onMounted, watch, computed } from 'vue'
+import { formatCurrency, openLink } from '../common';
 import iconDeposit from '@/assets/images/icons/profile/deposit.svg'
 import { CaretRightOutlined, HomeOutlined } from '@ant-design/icons-vue';
 import { ref } from 'vue';
 import axios from '@/common/axios.js';
 import { useRouter } from 'vue-router';
+import {useStore} from 'vuex'
 
 const user = ref(getStorage('user'))
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL ?? 'http://localhost:3000'
@@ -17,6 +18,10 @@ const balanceFluctuations = ref([]);
 const router = useRouter();
 const type = router.currentRoute.value.query.type;
 console.log(type);
+const store = useStore();
+const cskh = computed(() => {
+    return store.state.cskh;
+});
 
 onMounted(() => {
     // console.log(user)
@@ -97,7 +102,7 @@ watch(user, (newVal) => {
 
         <div class="action_money">
             <a-space style="width: 100%; display: flex; justify-content: space-around;">
-                <a-button type="primary" @click="cskh">
+                <a-button type="primary" @click="openLink(cskh?.url)">
                     <a-space>
                         <img :src="iconDeposit" alt=""></img>
                         <span>Nạp tiền</span>

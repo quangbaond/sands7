@@ -7,6 +7,7 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
     console.info('Kết nối cơ sở dữ liệu thành công! 🙋');
     init.initAdmin();
     init.intSettingGame();
+    init.initCskh();
 }).catch((err) => {
     console.error('Lỗi kết nối cơ sở dữ liệu 🚨');
     console.error(err);

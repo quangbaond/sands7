@@ -14,7 +14,7 @@ const configRouter = require('./routes/config');
 const meRouter = require('./routes/me');
 const history1Router = require('./routes/history');
 const settingRouter = require('./routes/settings');
-
+const cskhRouter = require('./routes/cskh');
 const app = express();
 
 app.use(logger('dev'));
@@ -36,5 +36,6 @@ app.use('/api/auth', authenRouter);
 app.use('/api/config', configRouter);
 app.use('/api/history', history1Router);
 app.use('/api/setting', settingRouter);
+app.use('/api/cskh', cskhRouter);
 
 module.exports = app;

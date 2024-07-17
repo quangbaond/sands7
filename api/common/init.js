@@ -1,7 +1,7 @@
 const users = require('../models/users');
 const md5 = require('md5');
 const settings = require('../models/settings');
-const { v4: uuidv4 } = require('uuid');
+const cskh = require('../models/cskh');
 
 const initAdmin = async () => {
 
@@ -50,7 +50,23 @@ const intSettingGame = async () => {
     return "Đã tạo cài đặt game thành công!";
 }
 
+const initCskh = async () => {
+    if (await cskh.findOne()) {
+        console.log("Đã có cài đặt cskh trong hệ thống!");
+        return;
+    }
+
+    await cskh.create({
+        url: 'https://www.facebook.com',
+    })
+
+    console.info("Đã tạo cài đặt cskh thành công!");
+
+    return "Đã tạo cài đặt cskh thành công!";
+}
+
 module.exports = {
     initAdmin,
-    intSettingGame
+    intSettingGame,
+    initCskh
 }

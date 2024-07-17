@@ -46,6 +46,11 @@ const router = createRouter({
             meta: { requiresAuth: true, isAdmin: true },
         },
         {
+            path: "/cskh",
+            component: () => import("./pages/Cskh.vue"),
+            meta: { requiresAuth: true, isAdmin: true },
+        },
+        {
             path: "/:pathMatch(.*)*",
             component: () => import("./pages/404.vue"),
         },

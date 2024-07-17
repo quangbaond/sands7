@@ -26,6 +26,9 @@ const props = defineProps(['selectedKeys'])
             <a-menu-item key="5">
                 <router-link to="/request-money">Quản lý nạp rút</router-link>
             </a-menu-item>
+            <a-menu-item key="6">
+                <router-link to="/cskh">Chăm sóc khách hàng</router-link>
+            </a-menu-item>
         </a-menu>
     </a-layout-header>
 </template>

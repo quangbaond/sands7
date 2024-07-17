@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { getStorage } from "./common";
 import { PROFILE_KEY } from "./common/constants";
+import { useStore } from "vuex";
+import axios from "@/common/axios";
+// const store = useStore();
+import store from "./store";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -71,8 +75,17 @@ router.beforeEach(async (to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth) && !profile)
         next({ path: "/login" });
 
-    if (to.matched.some((record) => record.meta.isAdmin) && profile.role !== "admin")
-        next({ path: "/" });
+    if (to.matched.some((record) => record.meta.requiresAuth) && profile) {
+        axios.get('/cskh').then(res => {
+            store.commit('setCskh', res);
+        });
+
+        axios.get('/me/profile').then(res => {
+            store.commit('setProfile', res?.user);
+        })
+    }
+    // next({ path: "/" });
+
 
     return next();
 });

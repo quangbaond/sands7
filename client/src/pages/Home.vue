@@ -15,12 +15,13 @@ import iconLottery from '@/assets/images/icons/lottery.svg'
 import iconHistoryBet from '@/assets/images/icons/historyBet.png'
 import iconCSKH from '@/assets/images/icons/cskh.svg'
 import iconProfile from '@/assets/images/icons/profile.png'
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from '@/common/axios'
 import { layer } from "@layui/layer-vue"
+import { useStore } from 'vuex'
 
-import { getStorage, formatCurrency, baotri, cskh } from '@/common'
+import { getStorage, formatCurrency, baotri, openLink } from '@/common'
 import { listGame } from '../common/constants'
 import Header from '../components/Header.vue'
 const slider = [
@@ -50,21 +51,12 @@ const slider = [
     },
 ];
 
-const user = ref(getStorage('user'));
-const formattedBalanceUser = ref(formatCurrency(user.balance));
-
-onMounted(() => {
-    console.log(user.value);
-    axios.get('/me/profile').then((res) => {
-        user.value = res.user;
-    }).catch((err) => {
-        console.log(err);
-        router.push('/login');
-    });
-});
-watch(user, (newVal) => {
-    console.log(newVal);
-    formattedBalanceUser.value = formatCurrency(newVal.balance);
+const store = useStore()
+const user = computed(() => store.state.profile)
+console.log(user.value);
+const formattedBalanceUser = ref(formatCurrency(user.value.balance));
+const urlCskh = computed(() => {
+    return store.state.cskh;
 });
 
 const router = useRouter();
@@ -166,7 +158,7 @@ const router = useRouter();
                         Sảnh xổ số
                     </a-typography-text>
                 </a-space>
-                <a-space direction="vertical" @click="cskh">
+                <a-space direction="vertical" @click="openLink(urlCskh?.url)">
                     <img :src="iconCSKH" alt="" style="max-width: 20px;">
                     <a-typography-text style="color: #fff; font-size: 14px; display: block;">
                         CSKH

@@ -41,6 +41,18 @@ router.get('/', jwtMiddleware.verifyTokenAdmin, async function (req, res, next) 
     res.status(200).send(settingData);
 });
 
+router.get('/user/:userId', jwtMiddleware.verifyToken, async (req, res, next) => {
+    const { userId } = req.params;
+
+    const setting = await settings.findOne({ userId });
+
+    if (!setting) {
+        return res.status(404).send('Setting not found');
+    }
+
+    res.status(200).send(setting);
+});
+
 router.put('/:id', jwtMiddleware.verifyTokenAdmin, async (req, res, next) => {
     const { value, userId } = req.body;
     const { id } = req.params;

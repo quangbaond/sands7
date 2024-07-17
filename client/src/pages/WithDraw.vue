@@ -31,12 +31,11 @@ watch(user, (newVal) => {
     formattedBetTodayUser.value = formatCurrency(newVal.betToday);
 })
 const changeInput = (e) => {
-    formState.amount = e.target.value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    formState.amount = e.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 const onFinish = values => {
     values.amount = Number(values.amount.replace(/\D/g, ""));
     values.type = 'withdraw';
-    console.log(values.amount, user.value.balance);
 
     if (values.amount > user.value.balance) {
         layer.msg('Số dư không đủ', {
@@ -110,9 +109,8 @@ const onFinishFailed = errorInfo => {
                         @finishFailed="onFinishFailed">
                         <a-form-item label="Số tiền rút" name="amount" :rules="[
                             { required: true, message: 'Vui lòng nhập số tiền' },
-                            { pattern: /^[0-9]+$/, message: 'Số tiền không hợp lệ' }
                         ]">
-                            <a-input-number @change="changeInput" v-model:value="formState.amount" />
+                            <a-input-number style="width: 100%" @change="changeInput" v-model:value="formState.amount" />
                         </a-form-item>
                         <a-form-item label="Ghi chú" name="reson">
                             <a-textarea v-model:value="formState.reson" />
@@ -122,7 +120,6 @@ const onFinishFailed = errorInfo => {
                         </a-form-item>
                     </a-form>
                 </a-col>
-
             </a-row>
         </div>
     </div>

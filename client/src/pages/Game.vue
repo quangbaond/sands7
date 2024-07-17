@@ -26,16 +26,14 @@ console.log(codeInParam);
 onMounted(() => {
     axios.get('/me/profile').then((res) => {
         user.value = res.user;
+        axios.get(`/setting/user/${user.value._id}`).then((res) => {
+            setting.value = res;
+        });
     }).catch((err) => {
         console.log(err);
         router.push('/login');
     });
-    axios.get('/setting').then((res) => {
-        setting.value = res;
-    });
-    socket.on('connected', (data) => {
-        console.log('connected', data);
-    })
+
     socket.on(codeInParam, async (dataBet) => {
         betDataOnServer.value = dataBet
     })

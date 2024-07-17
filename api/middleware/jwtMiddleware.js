@@ -15,14 +15,15 @@ const verifyToken = (req, res, next) => {
         return res.status(401).send({ message: "Đăng nhập hết hạn, Vui lòng đăng nhập lại!" });
     }
 
+    console.log(token);
     jwt.verify(token, config.secret, async (err, decoded) => {
         if (err) {
             return res.status(401).send({
                 message: "Tài khoản không hợp lệ",
             });
         }
-
-        const user = await User.findOne({ _id: decoded.id });
+        console.log(decoded);
+        const user = await User.findById(decoded.id).select({ password: 0 });
         console.log(user);
         if (user.status !== 'active') {
             return res.status(401).json({ message: 'Tài khoản đã bị khóa!' })

@@ -6,7 +6,6 @@ const jwtMiddleware = require('../middleware/jwtMiddleware');
 const balanceFluctuations = require('../models/balanceFluctuation');
 const requestMoney = require('../models/requestMoney');
 const md5 = require('md5');
-const { Socket } = require('socket.io');
 
 /* GET users listing. */
 // list
@@ -65,29 +64,26 @@ router.put('/:id', jwtMiddleware.verifyToken, async (req, res, next) => {
     return res.status(404).send('User not found');
   }
 
-  let type = 'plus';
-  let typeRequest = 'deposit';
-
   if (isNaN(balance)) {
     return res.status(400).send('Balance is not a number');
   }
   let amount = balance - user.balance;
-  if (amount < 0) {
-    type = 'minus';
-    amount = Math.abs(amount);
-    typeRequest = 'withdraw';
-  }
-  const formatDate = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''); // 2019-12-10 10:00:00
+  amount = amount < 0 ? Math.abs(amount) : amount;
+  let typeRequest = amount > 0 ? 'deposit' : 'withdraw';
+  if (amount !== 0) {
 
-  const requestMoneyData = {
-    userID: id,
-    amount,
-    type: typeRequest,
-    status: 'accept',
-    description: 'Cập nhật số dư',
-    note: `Bạn được cập nhật số dư ${formatCurrency(user.balance)} thành ${formatCurrency(parseFloat(balance))} vào lúc ${formatDate}`,
+    const formatDate = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''); // 2019-12-10 10:00:00
+
+    const requestMoneyData = {
+      userID: id,
+      amount,
+      type: typeRequest,
+      status: 'accept',
+      description: 'Cập nhật số dư',
+      note: `Bạn được cập nhật số dư ${formatCurrency(user.balance)} thành ${formatCurrency(parseFloat(balance))} vào lúc ${formatDate}`,
+    }
+    await requestMoney.create(requestMoneyData);
   }
-  await requestMoney.create(requestMoneyData);
 
   const userUpdate = await users.findByIdAndUpdate(id, { phone, balance: parseFloat(balance), status, email, role });
 

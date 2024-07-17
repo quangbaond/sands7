@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, onMounted, inject } from 'vue';
+import { reactive, ref, onMounted, inject, computed } from 'vue';
 import axios from '@/common/axios';
 import { layer } from "@layui/layer-vue";
 import { setStorage } from '@/common';
@@ -7,7 +7,8 @@ import { useRouter } from 'vue-router'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 import Header from '../components/Header.vue';
 import Logo from '@/assets/images/logo.png';
-import { cskh } from '../common';
+import { openLink } from '../common';
+import { useStore } from 'vuex';
 
 const formState = reactive({
     username: '',
@@ -17,6 +18,11 @@ const inviteCodeAdmin = ref('');
 const router = useRouter();
 const loadingBtn = ref(false);
 const disbaledBtn = ref(false);
+const store = useStore();
+
+const urlCskh = computed(() => {
+    return store.state.cskh;
+});
 
 const onFinish = async (values) => {
     if (loadingBtn.value) return;
@@ -102,7 +108,7 @@ onMounted(() => {
                    <a-space align="center">
                     <a-button type="link" class="link" @click="router.push('/register')">Đăng ký</a-button>
                     <a-button type="link" class="link" @click="router.push('/register')">CSKH</a-button>
-                    <a-button type="link" class="link" @click="cskh">Quên mật
+                    <a-button type="link" class="link" @click="openLink(cskh?.url)">Quên mật
                         khẩu</a-button>
                 </a-space>
                 </a-form>

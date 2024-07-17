@@ -1,10 +1,12 @@
 <script setup>
 import Header from '@/components/admin/Header.vue';
 import Footer from '@/components/admin/Footer.vue';
-import { reactive, onMounted, ref } from 'vue';
+import { reactive, onMounted, ref, watch } from 'vue';
 import axios from '@/common/axios.js';
 import { useRouter } from 'vue-router';
-import {banks} from '@/common/constants.js';
+import { banks } from '@/common/constants.js';
+import { layer } from '@layui/layer-vue';
+import {formatDateTime} from '@/common';
 const formState = ref({
     fullname: '',
     phone: '',
@@ -25,16 +27,37 @@ onMounted(() => {
         console.log(formState.value);
     });
 });
+watch(() => formState.value, (newVal) => {
+    formState.value.balance = newVal.balance ? newVal.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
+    formState.value.createAt = newVal.createAt ? formatDateTime(newVal.createAt) : '';
+    formState.value.updateAt = newVal.updateAt ? formatDateTime(newVal.updateAt) : '';
+})
 const changeBalance = (e) => {
     if (!e || isNaN(3)) return;
     formState.value.balance = e.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
-const onFinish = async () => {
-    console.log(formState.value);
-    axios.put(`/users/${id}`, formState.value).then((res) => {
-        console.log(res);
-        router.push('/');
-    });
+const onFinish = async (values) => {
+    console.log('Success:', values);
+    const data = {
+        ...values,
+        balance: values.balance ? values.balance.replace(/\D/g, '') : 0,
+    };
+
+    console.log(data);
+    const layerLoad = layer.load(1);
+    axios.put(`/users/${id}`, data).then((res) => {
+        layer.msg('Cập nhật thành công', {
+            icon: 1,
+            time: 1500,
+        });
+    }).catch((err) => {
+        layer.msg('Cập nhật thất bại', {
+            icon: 2,
+            time: 1500,
+        });
+    }).finally(() => {
+        layer.close(layerLoad);
+    })
 };
 
 const onFinishFailed = (errorInfo) => {
@@ -103,8 +126,7 @@ const onFinishFailed = (errorInfo) => {
 
                             <a-col :span="12">
                                 <a-form-item label="CHọn ngân hàng
-                                " name="bankName"
-                                    :rules="[{ required: true, message: 'Vui lòng chọn ngân hàng' }]">
+                                " name="bankName" :rules="[{ required: true, message: 'Vui lòng chọn ngân hàng' }]">
                                     <a-select v-model:value="formState.bankName">
                                         <a-select-option :value="bank.short_name" v-for="bank in banks"
                                             :key="bank.short_name">
@@ -112,22 +134,27 @@ const onFinishFailed = (errorInfo) => {
                                         </a-select-option>
                                     </a-select>
                                 </a-form-item>
+                            </a-col>
+                            <a-col :span="12">
+
                                 <a-form-item label="Chi nhánh" name="bankBranch"
                                     :rules="[{ required: true, message: 'Vui lòng nhập chi nhánh' }]">
                                     <a-input v-model:value="formState.bankBranch"></a-input>
                                 </a-form-item>
+                            </a-col>
+                            <a-col :span="12">
+
                                 <a-form-item label="Số tài khoản" name="bankAccountNumber"
                                     :rules="[{ required: true, message: 'Vui lòng nhập số tài khoản' }]">
                                     <a-input v-model:value="formState.bankAccountNumber"></a-input>
                                 </a-form-item>
+                            </a-col>
+                            <a-col :span="12">
+
                                 <a-form-item label="Tên tài khoản" name="bankAccountName"
                                     :rules="[{ required: true, message: 'Vui lòng nhập tên tài khoản' }]">
                                     <a-input v-model:value="formState.bankAccountName"></a-input>
                                 </a-form-item>
-                                <a-form-item>
-                                    <a-button type="primary" style="width: 100%;" html-type="submit">Liên kết</a-button>
-                                </a-form-item>
-
                             </a-col>
                         </a-row>
                         <a-form-item>

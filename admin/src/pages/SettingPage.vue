@@ -130,6 +130,8 @@ const save = key => {
     Object.assign(dataSource.value.filter(item => key === item.key)[0], editableData[key]);
     console.log(editableData[key]);
     const data = cloneDeep(editableData[key]);
+    console.log(data);
+    data.userId = data.user._id;
     axios.put(`/setting/${key}`, data).then((res) => {
 
         run({

@@ -4,6 +4,7 @@ const user = require('../models/users');
 const { getUserInviteByCode } = require('../common/index');
 var jwt = require("jsonwebtoken");
 const config = require("../config/auth.js");
+const setting = require('../models/settings');
 const getIP = require('ipware')().get_ip;
 const login = async (req, res) => {
 
@@ -56,9 +57,9 @@ const logout = async (req, res) => {
 }
 
 const register = async (req, res) => {
-    const { username, password, passwordConfirm, password2, inviteCode } = req.body;
+    const { username, password, passwordConfirm, inviteCode } = req.body;
 
-    if (!username || !password || !password2) {
+    if (!username || !password ) {
         return res.status(422).json({ message: 'Vui lòng điền đầy đủ thông tin!' })
     }
 
@@ -80,11 +81,18 @@ const register = async (req, res) => {
         const newUser = new user({
             username,
             password: md5(password),
-            password2: md5(password2),
             userInvite: userInvite._id,
             inviteCode: Math.random().toString(36).substring(6).toUpperCase(),
         });
         await newUser.save();
+
+        const newSetting = new setting({
+            name: 'game',
+            userId: newUser._id,
+            value: '1.98',
+        });
+
+        await newSetting.save();
 
         const token = jwt.sign({ id: user._id }, config.secret,
             {

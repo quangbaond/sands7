@@ -26,11 +26,8 @@ const onFinish = async (values) => {
     axios.post('/auth/register', values).then((res) => {
         layer.msg("Đăng ký thành công", { icon: 1, time: 5000 });
         setTimeout(() => {
-            if (res.token) {
-                setStorage('token', res.token);
-                setStorage('user', res.user);
-                router.push('/');
-            }
+            router.push('/login');
+
         }, 2000);
     }).catch((err) => {
         console.log(err);
@@ -110,12 +107,12 @@ onMounted(() => {
                         placeholder="Xác nhận mật khẩu" />
                 </a-form-item>
                 <!-- // password2 -->
-                <a-form-item name="password2" :rules="[{ required: true, message: 'Mật khẩu rút tiền không được để trống' },
+                <!-- <a-form-item name="password2" :rules="[{ required: true, message: 'Mật khẩu rút tiền không được để trống' },
                 { min: 6, message: 'Mật khẩu rút tiền phải có ít nhất 6 ký' },
                 ]">
                     <a-input-password v-model:value="formState.password2" size="large"
                         placeholder="Mật khẩu rút tiền" />
-                </a-form-item>
+                </a-form-item> -->
                 <router-link to="/login">Đăng nhập với tài khoản đã có</router-link>
 
                 <a-form-item name="agreeToTerms" :valuePropName="formState.agreeToTerms"

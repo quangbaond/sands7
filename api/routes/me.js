@@ -21,7 +21,6 @@ router.get('/profile', jwtMiddleware.verifyToken, function (req, res, next) {
     if (!token) {
         return res.status(401).send({ message: "Đăng nhập hết hạn, Vui lòng đăng nhập lại!" });
     }
-    console.log(token);
     jwt.verify(token, config.secret, async (err, decoded) => {
         if (err) {
             console.log(err);

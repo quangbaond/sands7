@@ -3,18 +3,29 @@ import { createLogger, createStore } from "vuex";
 const store = createStore({
     state() {
         return {
-            count: 0,
+            cskh: {
+                url: "",
+            },
+            profile: {
+                username: "",
+                email: "",
+                phone: "",
+                role: "",
+            },
         };
     },
     mutations: {
-        increment(state) {
-            state.count++;
+        setCskh(state, cskh) {
+            state.cskh = cskh;
+        },
+        setProfile(state, profile) {
+            state.profile = profile;
         },
     },
     actions: {
-        increment(context) {
-            context.commit("increment");
-        },
+        setCskh(context, cskh) {
+            context.commit("setCskh", cskh);
+        }
     },
     plugins: import.meta.env.MODE !== "production" ? [createLogger()] : [],
 });

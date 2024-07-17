@@ -1,14 +1,14 @@
 <script setup>
 import { getStorage } from '@/common'
-import { onMounted, watch } from 'vue'
-import { formatCurrency, cskh } from '../common';
+import { onMounted, watch, computed } from 'vue'
+import { formatCurrency, openLink } from '../common';
 import iconDeposit from '@/assets/images/icons/profile/deposit.svg'
 import { CaretRightOutlined, HomeOutlined, LogoutOutlined } from '@ant-design/icons-vue';
 import { ref } from 'vue';
 import axios from '@/common/axios.js';
 import { useRouter } from 'vue-router';
 import { layer } from '@layui/layer-vue';
-
+import { useStore } from 'vuex';
 const user = ref(getStorage('user'))
 const router = useRouter();
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL ?? 'http://localhost:3000'
@@ -18,6 +18,11 @@ const formattedWinTodayUser = ref(formatCurrency(user.balance))
 const totalOnbet = ref({
     totalOnbet: 0,
     totalWin: 0
+});
+const store = useStore();
+
+const cskh = computed(() => {
+    return store.state.cskh;
 });
 onMounted(() => {
     // console.log(user)
@@ -104,7 +109,7 @@ const logout = () => {
 
         <div class="action_money">
             <a-space style="width: 100%; display: flex; justify-content: space-around;">
-                <a-button type="primary" @click="cskh">
+                <a-button type="primary" @click="openLink(cskh?.url)">
                     <a-space>
                         <img :src="iconDeposit" alt=""></img>
                         <span>Nạp tiền</span>

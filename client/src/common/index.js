@@ -36,6 +36,6 @@ export const formatCurrency = (value) => {
 export const baotri = () => {
     layer.msg("Chức năng đang được bảo trì", { icon: 5 });
 }
-export const cskh = () => {
-    window.open(import.meta.env.VITE_APP_URL_CSKH, "_blank");
+export const openLink = (url) => {
+    window.open(url, "_blank");
 }
