@@ -15,7 +15,7 @@ const handleGoogleTranslateSelect = (language) => {
         <a-col :span="12"
             style="display: flex; align-self: center;color: #fff; text-align: right; justify-content: end;">
             <GoogleTranslateSelect default-language-code="vi" default-page-language-code="vi"
-                :fetch-browser-language="true" trigger="click" @select="handleGoogleTranslateSelect" />
+                :fetch-browser-language="false" trigger="click" @select="handleGoogleTranslateSelect" />
         </a-col>
     </a-row>
 

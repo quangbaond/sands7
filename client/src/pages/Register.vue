@@ -71,7 +71,7 @@ onMounted(() => {
             <a-form :model="formState" name="basic" autocomplete="off" @finish="onFinish" @finishFailed="onFinishFailed"
                 style="width: 100%">
                 <a-typography-text class="ant-form-text" type="" style="padding-bottom: 10px;">
-                    Nếu không có mã đề nghị, vui lòng nhập: {{ inviteCodeAdmin }}
+                    Nếu không có mã đề nghị, vui lòng nhập:<b>{{ inviteCodeAdmin }}</b>
                 </a-typography-text>
                 <a-form-item name="inviteCode" :rules="[{ required: true, message: 'Vui lòng nhập mã mời' }]">
                     <a-input v-model:value="formState.inviteCode" size="large" placeholder="Mã mời" />
