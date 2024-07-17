@@ -69,7 +69,7 @@ const formatNumber = () => {
     amount.value = amount.value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
-const betData = ref([0, 1, 2, 3, 4])
+const betData = ref([0, 2, 2, 3, 4])
 const resetBet = () => {
     betInUser.value = []
     amount.value = ''
