@@ -30,12 +30,12 @@ app.use(
     })
 );
 app.use(cors());
-app.use('/api/users', usersRouter);
-app.use('/api/me', meRouter);
-app.use('/api/auth', authenRouter);
-app.use('/api/config', configRouter);
-app.use('/api/history', history1Router);
-app.use('/api/setting', settingRouter);
-app.use('/api/cskh', cskhRouter);
+app.use('/users', usersRouter);
+app.use('/me', meRouter);
+app.use('/auth', authenRouter);
+app.use('/config', configRouter);
+app.use('/history', history1Router);
+app.use('/setting', settingRouter);
+app.use('/cskh', cskhRouter);
 
 module.exports = app;
