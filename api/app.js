@@ -30,7 +30,10 @@ app.use(
     })
 );
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: [
+        process.env.CLIENT_URL,
+        process.env.ADMIN_URL
+    ],
     credentials: true
 }));
 app.use('/users', usersRouter);
