@@ -1,13 +1,14 @@
 <script setup>
 import { getStorage } from '@/common'
 import { onMounted, watch } from 'vue'
-import { formatCurrency, formatDateTime, cskh } from '../common';
+import { formatCurrency, formatDateTime, openLink } from '../common';
 import iconDeposit from '@/assets/images/icons/profile/deposit.svg'
 import { CaretRightOutlined, HomeOutlined } from '@ant-design/icons-vue';
 import { ref } from 'vue';
 import axios from '@/common/axios.js';
 import { useRouter } from 'vue-router';
 import { cloneDeep } from 'lodash-es';
+import { useStore } from 'vuex';
 
 const user = ref(getStorage('user'))
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL ?? 'http://localhost:3000'
@@ -15,6 +16,11 @@ const formattedBalanceUser = ref(formatCurrency(user.balance))
 const formattedBetTodayUser = ref(formatCurrency(user.betToday))
 const router = useRouter();
 const dataSource = ref([]);
+const store = useStore();
+const cskh = computed(() => {
+    return store.state.cskh;
+});
+
 
 const columns = [
     {
@@ -193,7 +199,7 @@ const changePagination = (page) => {
 
         <div class="action_money">
             <a-space style="width: 100%; display: flex; justify-content: space-around;">
-                <a-button type="primary" @click="cskh">
+                <a-button type="primary" @click="openLink(cskh?.url)">
                     <a-space>
                         <img :src="iconDeposit" alt=""></img>
                         <span>Nạp tiền</span>

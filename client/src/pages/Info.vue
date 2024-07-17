@@ -1,7 +1,7 @@
 <script setup>
 import { getStorage } from '@/common'
-import { onMounted, watch } from 'vue'
-import { formatCurrency, formatDateTime, cskh } from '../common';
+import { onMounted, watch, computed } from 'vue'
+import { formatCurrency, formatDateTime, openLink } from '../common';
 import iconDeposit from '@/assets/images/icons/profile/deposit.svg'
 import { CaretRightOutlined, HomeOutlined } from '@ant-design/icons-vue';
 import { ref } from 'vue';
@@ -9,6 +9,7 @@ import axios from '@/common/axios.js';
 import { useRouter } from 'vue-router';
 import { cloneDeep } from 'lodash-es';
 import { layer } from '@layui/layer-vue';
+import { useStore } from 'vuex';
 
 const user = ref(getStorage('user'))
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL ?? 'http://localhost:3000'
@@ -23,6 +24,10 @@ const formState = ref({
     email: user.value.email,
     phone: user.value.phone,
 })
+const store = useStore();
+const cskh = computed(() => {
+    return store.state.cskh;
+});
 
 
 
@@ -90,7 +95,7 @@ const updateInfo = (field, value) => {
 
         <div class="action_money">
             <a-space style="width: 100%; display: flex; justify-content: space-around;">
-                <a-button type="primary" @click="cskh">
+                <a-button type="primary" @click="openLink(cskh?.url)">
                     <a-space>
                         <img :src="iconDeposit" alt=""></img>
                         <span>Nạp tiền</span>
