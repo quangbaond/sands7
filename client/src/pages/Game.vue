@@ -225,7 +225,7 @@ watch(() => visible.value, (value) => {
                         <a-col :span="6">
                             <a-typography-text class="result_item"
                                 style="color: #fff; font-size: 16px; display: block; text-align: center;">
-                                {{ betData[1] }}
+                                <span>{{ betData[1] }}</span>
                             </a-typography-text>
                         </a-col>
                         <a-col :span="6">
