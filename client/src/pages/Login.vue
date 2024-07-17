@@ -123,7 +123,7 @@ onMounted(() => {
 
 #wrap {
     height: 100vh;
-    background-image: url(@/assets/images/bg_login.PNG);
+    background-image: url(@/assets/images/bg_login.png);
     background-size: cover;
     background-position: center;
 }
