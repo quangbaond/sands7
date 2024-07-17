@@ -29,7 +29,10 @@ app.use(
         httpOnly: true
     })
 );
-app.use(cors());
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true
+}));
 app.use('/users', usersRouter);
 app.use('/me', meRouter);
 app.use('/auth', authenRouter);
