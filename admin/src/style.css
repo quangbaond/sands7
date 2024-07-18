@@ -35,3 +35,7 @@ body {
 .ant-typography {
   color: #979696;
 }
+
+.notranslate {
+  unicode-bidi: isolate;
+}

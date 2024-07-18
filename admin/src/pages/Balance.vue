@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import Header from '@/components/admin/Header.vue';
 import Footer from '@/components/admin/Footer.vue';
 import axios from '@/common/axios.js';
-import {layer} from '@layui/layer-vue';
+import { layer } from '@layui/layer-vue';
 import { formatCurrency } from '@/common';
 const formState = ref({
     userId: '',
@@ -27,7 +27,7 @@ const onFinish = (values) => {
     const data = {
         ...values,
     };
-    if(data.type === 'sub' && userSelect.value.balance < data.balance) {
+    if (data.type === 'sub' && userSelect.value.balance < data.balance) {
         layer.msg('Số dư không đủ', {
             icon: 2,
             time: 1500,
@@ -72,8 +72,9 @@ onMounted(() => {
                         :rules="[{ required: true, message: 'Vui lòng nhập ID người dùng' }]">
                         <a-select @change="handleChangeUser" show-search v-model:value="formState.userId"
                             style="width: 100%">
-                            <a-select-option v-for="user in userList" :key="user._id" :value="user._id">{{ user.username
-                                }}</a-select-option>
+                            <a-select-option v-for="user in userList" :key="user._id" :value="user._id">
+                                <div class="notranslate">{{ user.username }}</div>
+                            </a-select-option>
                         </a-select>
                         {{ userSelect ? 'số dư người dùng: ' + formatCurrency(userSelect.balance) : '' }}
                     </a-form-item>
