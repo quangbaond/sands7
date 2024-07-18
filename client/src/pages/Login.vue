@@ -105,12 +105,12 @@ onMounted(() => {
                             Đăng nhập
                         </a-button>
                     </a-form-item>
-                   <a-space align="center">
-                    <a-button type="link" class="link" @click="router.push('/register')">Đăng ký</a-button>
-                    <a-button type="link" class="link" @click="router.push('/register')">CSKH</a-button>
-                    <a-button type="link" class="link" @click="openLink(cskh?.url)">Quên mật
-                        khẩu</a-button>
-                </a-space>
+                    <a-space align="center">
+                        <a-button type="link" class="link" @click="router.push('/register')">Đăng ký</a-button>
+                        <a-button type="link" class="link" @click="openLink(cskh?.url)">CSKH</a-button>
+                        <a-button type="link" class="link" @click="openLink(cskh?.url)">Quên mật
+                            khẩu</a-button>
+                    </a-space>
                 </a-form>
             </a-col>
         </a-row>
