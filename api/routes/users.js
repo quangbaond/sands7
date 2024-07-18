@@ -179,6 +179,31 @@ router.put('/change-password/:id', jwtMiddleware.verifyToken, async (req, res, n
   res.status(200).send(userUpdate);
 });
 
+// change - password - withdraw
+router.put('/change-password-withdraw/:id', jwtMiddleware.verifyToken, async (req, res, next) => {
+  const { id } = req.params;
+  const { password2, confirmPassword2 } = req.body;
+
+  const user = await users.findById(id);
+
+  if (!user) {
+    return res.status(404).send({ message: 'Không tìm thấy người dùng' });
+  }
+
+  if (password2 !== confirmPassword2) {
+    return res.status(400).send('Mật khẩu không khớp');
+  }
+
+  const newPassword = md5(password2);
+
+  const userUpdate = await users.findByIdAndUpdate(id, { password2: newPassword });
+
+  if (!userUpdate) {
+    return res.status(404).send({ message: 'Không tìm thấy người dùng' });
+  }
+  res.status(200).send(userUpdate);
+});
+
 //change-bank
 router.put('/change-bank/:id', jwtMiddleware.verifyToken, async (req, res, next) => {
   const { id } = req.params;
@@ -226,5 +251,64 @@ router.get('/:id', jwtMiddleware.verifyToken, async (req, res, next) => {
 
   res.status(200).send(user);
 });
+
+router.put('/update-balance/:id', jwtMiddleware.verifyToken, async (req, res, next) => {
+  const { id } = req.params;
+  const { balance, note, type } = req.body;
+
+  const user = await users.findById(id);
+
+  if (!user) {
+    return res.status(404).send('User not found');
+  }
+
+  if (!balance || isNaN(balance)) {
+    return res.status(422).send('Balance is not a number');
+  }
+
+  let typeRequest = type === 'add' ? 'deposit' : 'withdraw';
+  if (balance !== 0) {
+
+    const formatDate = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+
+    const requestMoneyData = {
+      userID: id,
+      amount: balance,
+      type: typeRequest,
+      status: 'accept',
+      description: 'Cập nhật số dư',
+      note: note ?? `Bạn được cập nhật số dư ${formatCurrency(user.balance)} thành ${formatCurrency(parseFloat(balance))} vào lúc ${formatDate}`,
+    }
+    await requestMoney.create(requestMoneyData);
+  }
+
+  user.balance = type === 'add' ? user.balance + parseFloat(balance) : user.balance - parseFloat(balance);
+
+  await user.save();
+
+  res.status(200).send(user);
+
+});
+
+//create user
+router.post('/create', jwtMiddleware.verifyTokenAdmin, async (req, res, next) => {
+  const { username, password, email, phone, role } = req.body;
+
+  try {
+    const user = await users.create({
+      username,
+      password: md5(password),
+      password2: md5(password),
+      phone,
+      email,
+      role
+    });
+    res.status(201).json(user);
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(422).json({ message: 'Tài khoản đã tồn tại!' })
+    }
+  }
+})
 
 module.exports = router;

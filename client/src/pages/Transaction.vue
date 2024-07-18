@@ -60,7 +60,7 @@ watch(user, (newVal) => {
                 <HomeOutlined style="color: #fff; font-size: 25px; display: block;" @click="router.push('/')" />
 
                 <a-avatar :size="64" :src="staticUrl + user.avatar" :alt="user.username"></a-avatar>
-                <a-typography.Title style="color: #fff; font-size: 18px;"> {{ user.username
+                <a-typography.Title style="color: #fff; font-size: 18px;" class="notranslate "> {{ user.username
                     }}</a-typography.Title>
             </a-space>
         </div>
@@ -129,7 +129,7 @@ watch(user, (newVal) => {
                         <span style="color: white;">Số dư: </span><span style="color: green;"
                             v-if="balance.type === 'deposit'">+ {{
                             formatCurrency(balance.amount) }}</span>
-                        <span style="color: red;" v-else >- {{
+                        <span style="color: red;" v-else>- {{
                             formatCurrency(balance.amount) }}</span>
                     </a-typography.Title>
                     <a-typography.Title style="color: #fff; display: block; height: 30px;font-size: 16px;">

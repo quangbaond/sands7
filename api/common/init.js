@@ -2,6 +2,7 @@ const users = require('../models/users');
 const md5 = require('md5');
 const settings = require('../models/settings');
 const cskh = require('../models/cskh');
+const inviteCode = require('../models/inviteCode');
 
 const initAdmin = async () => {
 
@@ -65,8 +66,25 @@ const initCskh = async () => {
     return "Đã tạo cài đặt cskh thành công!";
 }
 
+const initInviteCode = async () => {
+    if (await inviteCode.findOne()) {
+        console.log("Đã có cài đặt inviteCode trong hệ thống!");
+        return;
+    }
+
+    await inviteCode.create({
+        code: process.env.DEFAUL_CODE || 'S868',
+        status: 'active'
+    })
+
+    console.info("Đã tạo cài đặt inviteCode thành công!");
+
+    return "Đã tạo cài đặt inviteCode thành công!";
+}
+
 module.exports = {
     initAdmin,
     intSettingGame,
-    initCskh
+    initCskh,
+    initInviteCode,
 }

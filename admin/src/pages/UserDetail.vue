@@ -6,7 +6,7 @@ import axios from '@/common/axios.js';
 import { useRouter } from 'vue-router';
 import { banks } from '@/common/constants.js';
 import { layer } from '@layui/layer-vue';
-import {formatDateTime} from '@/common';
+import { formatDateTime } from '@/common';
 const formState = ref({
     fullname: '',
     phone: '',
@@ -28,7 +28,7 @@ onMounted(() => {
     });
 });
 watch(() => formState.value, (newVal) => {
-    formState.value.balance = newVal.balance ? newVal.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
+    formState.value.balance = newVal.balance ? newVal.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0;
     formState.value.createAt = newVal.createAt ? formatDateTime(newVal.createAt) : '';
     formState.value.updateAt = newVal.updateAt ? formatDateTime(newVal.updateAt) : '';
 })
@@ -40,10 +40,9 @@ const onFinish = async (values) => {
     console.log('Success:', values);
     const data = {
         ...values,
-        balance: values.balance ? values.balance.replace(/\D/g, '') : 0,
+        // balance: values.balance ? values.balance.replace(/\D/g, '') : 0,
     };
 
-    console.log(data);
     const layerLoad = layer.load(1);
     axios.put(`/users/${id}`, data).then((res) => {
         layer.msg('Cập nhật thành công', {
@@ -67,7 +66,7 @@ const onFinishFailed = (errorInfo) => {
 
 <template>
     <a-layout>
-        <Header :selectedKeys="['4']"></Header>
+        <Header :selectedKeys="['1']"></Header>
         <a-layout-content style="padding: 20px 50px">
             <div :style="{ background: '#fff', padding: '12px', minHeight: 'calc(100vh - 170px)' }">
                 <h3>Thông tin người dùng</h3>
@@ -76,7 +75,10 @@ const onFinishFailed = (errorInfo) => {
                         <a-row gutter="10">
                             <a-col :span="12">
                                 <a-form-item name="username" label="Họ và tên">
-                                    <a-input v-model:value="formState.username" />
+                                    <a-input v-model:value="formState.username" :rules="[
+                                        { required: true, message: 'Vui lòng nhập họ và tên' },
+                                        { min: 6, message: 'Họ và tên phải lớn hơn 6 ký tự' }
+                                    ]" />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
@@ -95,12 +97,11 @@ const onFinishFailed = (errorInfo) => {
                             <a-col :span="12">
                                 <a-form-item name="balance" label="Số dư">
                                     <a-input-number @change="changeBalance" style="width: 100%;"
-                                        v-model:value="formState.balance" />
+                                        v-model:value="formState.balance" disabled />
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
                                 <a-form-item name="role" label="Quyền">
-                                    <!-- <a-input v-model:value="formState.role" /> -->
                                     <a-select v-model:value="formState.role" style="width: 100%">
                                         <a-select-option value="admin">Quản trị</a-select-option>
                                         <a-select-option value="user">Người dùng</a-select-option>

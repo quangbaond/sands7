@@ -70,8 +70,10 @@ onMounted(() => {
         <div id="login">
             <a-form :model="formState" name="basic" autocomplete="off" @finish="onFinish" @finishFailed="onFinishFailed"
                 style="width: 100%">
-                <a-typography-text class="ant-form-text" type="" style="padding-bottom: 10px;">
-                    Nếu không có mã đề nghị, vui lòng nhập:<b>{{ inviteCodeAdmin }}</b>
+
+                <a-typography-text class="ant-form-text" type="" style="padding-bottom: 10px;" v-if="inviteCodeAdmin">
+                    Nếu không có mã đề nghị, vui lòng nhập:
+                    <b class="notranslate ">{{ inviteCodeAdmin }}</b>
                 </a-typography-text>
                 <a-form-item name="inviteCode" :rules="[{ required: true, message: 'Vui lòng nhập mã mời' }]">
                     <a-input v-model:value="formState.inviteCode" size="large" placeholder="Mã mời" />
@@ -107,12 +109,12 @@ onMounted(() => {
                         placeholder="Xác nhận mật khẩu" />
                 </a-form-item>
                 <!-- // password2 -->
-                <!-- <a-form-item name="password2" :rules="[{ required: true, message: 'Mật khẩu rút tiền không được để trống' },
+                <a-form-item name="password2" :rules="[{ required: true, message: 'Mật khẩu rút tiền không được để trống' },
                 { min: 6, message: 'Mật khẩu rút tiền phải có ít nhất 6 ký' },
                 ]">
                     <a-input-password v-model:value="formState.password2" size="large"
                         placeholder="Mật khẩu rút tiền" />
-                </a-form-item> -->
+                </a-form-item>
                 <router-link to="/login">Đăng nhập với tài khoản đã có</router-link>
 
                 <a-form-item name="agreeToTerms" :valuePropName="formState.agreeToTerms"

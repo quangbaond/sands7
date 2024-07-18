@@ -8,6 +8,7 @@ import { formatDateTime } from '@/common';
 import { layer } from '@layui/layer-vue';
 import { formatCurrency } from '../common';
 import { banks } from '@/common/constants';
+import {PlusCircleOutlined} from '@ant-design/icons-vue';
 
 const dataSource = ref([
     {
@@ -161,6 +162,8 @@ const userAction = ref({
 });
 const visible = ref(false);
 const visibleChangePass = ref(false);
+const visibleChangePass2 = ref(false);
+
 const showModal = (record) => {
     console.log(record);
     userAction.value = record;
@@ -174,6 +177,11 @@ const showModalChangePass = (record) => {
     console.log(record);
     userAction.value = record;
     visibleChangePass.value = true;
+};
+const showModalChangePass2 = (record) => {
+    console.log(record);
+    userAction.value = record;
+    visibleChangePass2.value = true;
 };
 const handleOkChangePass = e => {
     console.log(e);
@@ -219,6 +227,10 @@ const formStatePassword = reactive({
     password: '',
     confirmPassword: ''
 });
+const formStatePassword2 = reactive({
+    password2: '',
+    confirmPassword2: ''
+});
 const handelChangeTable = (params) => {
     run(params);
 }
@@ -258,6 +270,24 @@ const onFinishPassword = values => {
         });
     });
 };
+const onFinishPassword2 = values => {
+    axios.put(`/users/change-password-withdraw/${userAction.value._id}`, {
+        password2: formStatePassword2.password2,
+        confirmPassword2: formStatePassword2.confirmPassword2
+    }).then((res) => {
+        layer.msg('Thay đổi mật khẩu thành công', {
+            icon: 1,
+            time: 3000,
+        });
+        visibleChangePass2.value = false;
+    }).catch((err) => {
+        console.log(err);
+        layer.msg(err.response.data.message, {
+            icon: 2,
+            time: 3000,
+        });
+    });
+};
 const changeBank = (values) => {
     console.log('Success:', values);
     axios.put(`/users/change-bank/${userAction.value._id}`, values).then((res) => {
@@ -283,84 +313,92 @@ const changeBank = (values) => {
         <a-layout-content style="padding: 20px 50px">
             <div :style="{ background: '#fff', padding: '12px', minHeight: 'calc(100vh - 170px)' }">
                 <h3>Người dùng</h3>
-                <a-form layout="vertical" :model="formState" autocomplete="off" @finish="onFinish">
-                    <a-form-item v-model:value="formState.search">
-                        <a-input-search @search="search" placeholder="Tìm kiếm" :loading="loading" enter-button />
-                    </a-form-item>
-                </a-form>
+                <a-row>
+                    <a-col :span="12">
+                        <a-form layout="vertical" :model="formState" autocomplete="off" @finish="onFinish">
+                            <a-form-item v-model:value="formState.search">
+                                <a-input-search @search="search" placeholder="Tìm kiếm" :loading="loading"
+                                    enter-button />
+                            </a-form-item>
+                        </a-form>
+                    </a-col>
+                    <a-col :span="12" style="text-align: right;">
+                        <router-link to="/user/create">
+                            <a-button type="primary">
+                                <plus-circle-outlined />
+                                Thêm người dùng
+                            </a-button>
+                        </router-link>
+                    </a-col>
+                </a-row>
+
                 <a-table @change="handelChangeTable" :columns="columns" :data-source="dataSource" bordered
                     :pagination="pagination" :scroll="{ x: 1500, y: 700 }">
                     <template #bodyCell="{ column, text, record }">
                         <template v-if="['username'].includes(column.dataIndex)">
                             <router-link :to="`/user/${record._id}`">{{ text }}</router-link>
                         </template>
-                            <template v-if="['balance', 'phone', 'email'].includes(column.dataIndex)">
-                                <div>
-                                    <a-input v-if="editableData[record.key]"
-                                        v-model:value="editableData[record.key][column.dataIndex]"
-                                        style="margin: -5px 0" />
-                                    <template v-else>
-                                        {{ text }}
-                                    </template>
-                                </div>
-                            </template>
-                            <template v-if="['status'].includes(column.dataIndex)">
-                                <div>
-                                    <a-select v-if="editableData[record.key]"
-                                        v-model:value="editableData[record.key][column.dataIndex]"
-                                        style="margin: -5px 0">
-                                        <a-select-option value="active">Kích hoạt</a-select-option>
-                                        <a-select-option value="inactive">Khóa</a-select-option>
-                                    </a-select>
-                                    <template v-else>
-                                        {{ text }}
-                                    </template>
-                                </div>
-                            </template>
-                            <template v-if="['role'].includes(column.dataIndex)">
-                                <div>
-                                    <a-select v-if="editableData[record.key]"
-                                        v-model:value="editableData[record.key][column.dataIndex]"
-                                        style="margin: -5px 0">
-                                        <a-select-option value="admin">Admin</a-select-option>
-                                        <a-select-option value="user">Người dùng</a-select-option>
-                                    </a-select>
-                                    <template v-else>
-                                        {{ text }}
-                                    </template>
-                                </div>
-                            </template>
-                            <template v-else-if="column.dataIndex === 'operation'">
-                                <div class="editable-row-operations">
-                                    <span v-if="editableData[record.key]">
-                                        <a-typography-link @click="save(record.key)">Lưu</a-typography-link>
-                                        <a-popconfirm title="Bạn có muốn hủy thao thác?" @confirm="cancel(record.key)">
-                                            <a>Hủy</a>
-                                        </a-popconfirm>
-                                    </span>
-                                    <span v-else>
-                                        <a @click="edit(record.key)">Chỉnh sửa</a>
-                                        <a-popconfirm title="Bạn có muốn xóa người dùng này" ok-text="Xóa"
-                                            cancel-text="Hủy" @confirm="dle(record._id)">
-                                            <a href="#" style="color: red;">Xóa</a>
-                                        </a-popconfirm>
-                                        <a @click="showModal(record)" style="color: green">Ngân hàng</a>
-                                        <a @click="showModalChangePass(record)" style="color: yellowgreen">Thay đổi mật
-                                            khẩu</a>
-
-                                    </span>
-                                </div>
-                            </template>
+                        <template v-if="['phone', 'email'].includes(column.dataIndex)">
+                            <div>
+                                <a-input v-if="editableData[record.key]"
+                                    v-model:value="editableData[record.key][column.dataIndex]" style="margin: -5px 0" />
+                                <template v-else>
+                                    {{ text }}
+                                </template>
+                            </div>
                         </template>
+                        <template v-if="['status'].includes(column.dataIndex)">
+                            <div>
+                                <a-select v-if="editableData[record.key]"
+                                    v-model:value="editableData[record.key][column.dataIndex]" style="margin: -5px 0">
+                                    <a-select-option value="active">Kích hoạt</a-select-option>
+                                    <a-select-option value="inactive">Khóa</a-select-option>
+                                </a-select>
+                                <template v-else>
+                                    {{ text }}
+                                </template>
+                            </div>
+                        </template>
+                        <template v-if="['role'].includes(column.dataIndex)">
+                            <div>
+                                <a-select v-if="editableData[record.key]"
+                                    v-model:value="editableData[record.key][column.dataIndex]" style="margin: -5px 0">
+                                    <a-select-option value="admin">Admin</a-select-option>
+                                    <a-select-option value="user">Người dùng</a-select-option>
+                                </a-select>
+                                <template v-else>
+                                    {{ text }}
+                                </template>
+                            </div>
+                        </template>
+                        <template v-else-if="column.dataIndex === 'operation'">
+                            <div class="editable-row-operations">
+                                <span v-if="editableData[record.key]">
+                                    <a-typography-link @click="save(record.key)">Lưu</a-typography-link>
+                                    <a-popconfirm title="Bạn có muốn hủy thao thác?" @confirm="cancel(record.key)">
+                                        <a>Hủy</a>
+                                    </a-popconfirm>
+                                </span>
+                                <span v-else>
+                                    <a @click="edit(record.key)">Chỉnh sửa</a>
+                                    <a-popconfirm title="Bạn có muốn xóa người dùng này" ok-text="Xóa" cancel-text="Hủy"
+                                        @confirm="dle(record._id)">
+                                        <a href="#" style="color: red;">Xóa</a>
+                                    </a-popconfirm>
+                                    <a @click="showModal(record)" style="color: green">Ngân hàng</a>
+                                    <a @click="showModalChangePass(record)" style="color: yellowgreen">Mật
+                                        khẩu</a>
+                                    <a @click="showModalChangePass2(record)" style="color: #000">Mật
+                                        khẩu rút tiền</a>
+
+                                </span>
+                            </div>
+                        </template>
+                    </template>
                 </a-table>
             </div>
         </a-layout-content>
         <a-modal v-model:visible="visible" title="Chi tiết ngân hàng" @ok="handleOk" :footer="null">
-            <!-- <p>Tên Ngân hàng: <span style="color: red">{{ userAction.bankName }}</span></p>
-            <p>Số tài khoản: <span style="color: red;">{{ userAction.bankAccountNumber }}</span></p>
-            <p>Chi nhánh: <span style="color: red;">{{ userAction.bankBranch }}</span></p>
-            <p>Tên tài khoản: <span style="color: red;">{{ userAction.bankAccountName }}</span></p> -->
-            <!-- // form -->
             <a-form layout="vertical" :model="userAction" autocomplete="off" @finish="changeBank">
                 <a-form-item label="CHọn ngân hàng" name="bankName"
                     :rules="[{ required: true, message: 'Vui lòng chọn ngân hàng' }]">
@@ -411,6 +449,33 @@ const changeBank = (values) => {
                     }
                 ]">
                     <a-input-password v-model:value="formStatePassword.confirmPassword" />
+                </a-form-item>
+                <a-form-item>
+                    <a-button type="primary" html-type="submit">Lưu</a-button>
+                </a-form-item>
+            </a-form>
+        </a-modal>
+        <a-modal v-model:visible="visibleChangePass2" title="Thay đổi mật khẩu rút tiền" @ok="handleOk2" :footer="null">
+            <a-form layout="vertical" :model="formStatePassword2" autocomplete="off" @finish="onFinishPassword2">
+                <a-form-item label="Mật khẩu mới" name="password2" :rules="[
+                    { required: true, message: 'Vui lòng nhập mật khẩu' },
+                    { min: 6, message: 'Mật khẩu phải lớn hơn 6 ký tự' }
+                ]">
+                    <a-input-password v-model:value="formStatePassword2.password2" />
+                </a-form-item>
+                <a-form-item label="Nhập lại mật khẩu" name="confirmPassword2" :rules="[
+                    { required: true, message: 'Vui lòng nhập lại mật khẩu' },
+                    { min: 6, message: 'Mật khẩu phải lớn hơn 6 ký tự' },
+                    {
+                        validator: (rule, value, callback) => {
+                            if (value !== formStatePassword2.password2) {
+                                callback('Mật khẩu không khớp');
+                            }
+                            callback()
+                        }
+                    }
+                ]">
+                    <a-input-password v-model:value="formStatePassword2.confirmPassword2" />
                 </a-form-item>
                 <a-form-item>
                     <a-button type="primary" html-type="submit">Lưu</a-button>

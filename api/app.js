@@ -15,6 +15,7 @@ const meRouter = require('./routes/me');
 const history1Router = require('./routes/history');
 const settingRouter = require('./routes/settings');
 const cskhRouter = require('./routes/cskh');
+const inviteCodeRouter = require('./routes/inviteCode');
 const app = express();
 
 app.use(logger('dev'));
@@ -43,5 +44,6 @@ app.use('/config', configRouter);
 app.use('/history', history1Router);
 app.use('/setting', settingRouter);
 app.use('/cskh', cskhRouter);
+app.use('/invite', inviteCodeRouter);
 
 module.exports = app;

@@ -16,6 +16,11 @@ const router = createRouter({
             meta: { requiresAuth: true, isAdmin: true },
         },
         {
+            path: "/user/create",
+            component: () => import("./pages/UserCreate.vue"),
+            meta: { requiresAuth: true, isAdmin: true },
+        },
+        {
             path: "/login",
             component: () => import("./pages/Login.vue"),
             meta: { requiresAuth: false, isAdmin: false },
@@ -46,8 +51,18 @@ const router = createRouter({
             meta: { requiresAuth: true, isAdmin: true },
         },
         {
+            path: "/user-balance",
+            component: () => import("./pages/Balance.vue"),
+            meta: { requiresAuth: true, isAdmin: true },
+        },
+        {
             path: "/cskh",
             component: () => import("./pages/Cskh.vue"),
+            meta: { requiresAuth: true, isAdmin: true },
+        },
+        {
+            path: "/invite-code",
+            component: () => import("./pages/InviteCode.vue"),
             meta: { requiresAuth: true, isAdmin: true },
         },
         {

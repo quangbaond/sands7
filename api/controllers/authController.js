@@ -57,9 +57,9 @@ const logout = async (req, res) => {
 }
 
 const register = async (req, res) => {
-    const { username, password, passwordConfirm, inviteCode } = req.body;
+    const { username, password, passwordConfirm, inviteCode, password2 } = req.body;
 
-    if (!username || !password ) {
+    if (!username || !password || !password2) {
         return res.status(422).json({ message: 'Vui lòng điền đầy đủ thông tin!' })
     }
 
@@ -82,6 +82,7 @@ const register = async (req, res) => {
             username,
             password: md5(password),
             userInvite: userInvite._id,
+            password2: md5(password2),
             inviteCode: Math.random().toString(36).substring(6).toUpperCase(),
         });
         await newUser.save();

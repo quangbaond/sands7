@@ -74,7 +74,7 @@ const onFinishFailed = errorInfo => {
             <a-space align="center" style="display: flex; justify-content: space-around;">
                 <HomeOutlined style="color: #fff; font-size: 25px; display: block;" @click="router.push('/')" />
                 <a-avatar :size="64" :src="staticUrl + user.avatar" :alt="user.username"></a-avatar>
-                <a-typography.Title style="color: #fff; font-size: 18px;">{{ user.username
+                <a-typography.Title style="color: #fff; font-size: 18px;" class="notranslate ">{{ user.username
                     }}</a-typography.Title>
             </a-space>
         </div>

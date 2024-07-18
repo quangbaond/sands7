@@ -24,7 +24,7 @@ const verifyToken = (req, res, next) => {
         }
         console.log(decoded);
         const user = await User.findById(decoded.id).select({ password: 0 });
-        console.log(user);
+        if(!user) return res.status(401).send({ message: "Tài khoản không tồn tại" });
         if (user.status !== 'active') {
             return res.status(401).json({ message: 'Tài khoản đã bị khóa!' })
         }

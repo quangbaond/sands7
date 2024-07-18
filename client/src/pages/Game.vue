@@ -76,10 +76,8 @@ const resetBet = () => {
 }
 
 const changeBalance = (amount, calculation = '+') => {
-    // tạo hiệu ứng thay đổi số dư
     user.value.balance = calculation === '+' ? user.value.balance = amount : user.value.balance = amount
     formattedBalanceUser.value = formatCurrency(user.value.balance)
-
 }
 const visible = ref(false);
 const showModal = () => {

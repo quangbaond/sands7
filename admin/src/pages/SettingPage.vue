@@ -136,7 +136,6 @@ const save = key => {
 
         run({
             ...pagination.value,
-            // current: ,
         });
     }).catch((err) => {
         console.log(err);

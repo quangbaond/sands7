@@ -86,14 +86,14 @@ const router = useRouter();
                 <a-space align="start" style="justify-content: space-between;display: flex;">
                     <a-space direction="vertical">
                         <a-typography-text>
-                            Chào mừng, {{ user.username }}
+                            Chào mừng, <b class="notranslate ">{{ user.username }}</b>
                         </a-typography-text>
                         <a-typography-text>
                             Số dư, <span style="color: #fff; font-size: 20px;">{{ formattedBalanceUser }}</span>
                         </a-typography-text>
                     </a-space>
                     <a-space align="center" size="large">
-                        <a-space align="center" direction="vertical">
+                        <a-space align="center" direction="vertical" @click="openLink(urlCskh?.url)">
                             <img :src="iconDeposit" alt="" style="width: 30px">
                             <a-typography-text style="display: block; text-align: center; font-size: 10px;">
                                 Nạp tiền
