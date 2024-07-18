@@ -11,6 +11,7 @@ const store = createStore({
                 email: "",
                 phone: "",
                 role: "",
+                balance: 0,
             },
         };
     },
@@ -25,7 +26,10 @@ const store = createStore({
     actions: {
         setCskh(context, cskh) {
             context.commit("setCskh", cskh);
-        }
+        },
+        setProfile(context, profile) {
+            context.commit("setProfile", profile);
+        },
     },
     plugins: import.meta.env.MODE !== "production" ? [createLogger()] : [],
 });

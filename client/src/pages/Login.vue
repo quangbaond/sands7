@@ -115,7 +115,6 @@ onMounted(() => {
             </a-col>
         </a-row>
     </div>
-
 </template>
 
 <style>

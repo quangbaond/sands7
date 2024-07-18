@@ -24,6 +24,8 @@ import { useStore } from 'vuex'
 import { getStorage, formatCurrency, baotri, openLink } from '@/common'
 import { listGame } from '../common/constants'
 import Header from '../components/Header.vue'
+
+import {socket} from '@/socket'
 const slider = [
     {
         id: 1,
@@ -60,6 +62,13 @@ const urlCskh = computed(() => {
 });
 
 const router = useRouter();
+
+onMounted(() => {
+    console.log(`update-balance-${user.value._id}`);
+    socket.on(`update-balance-${user.value._id}`, (data) => {
+        formattedBalanceUser.value = formatCurrency(data.balance);
+    })
+})
 
 </script>
 
