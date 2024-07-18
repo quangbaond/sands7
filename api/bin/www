@@ -61,7 +61,6 @@ io.on('connection', (socket) => {
     }
   }
   socket.on('controllgame', async (data) => {
-
     const isValid = validateInput(data.betData);
     if (!isValid) {
       socket.emit('controllgameResponse', { status: 'fail', message: 'Dữ liệu không hợp lệ' });
@@ -111,6 +110,12 @@ io.on('connection', (socket) => {
 
     socket.emit('controllgameResponse', { status: 'success', data: updateBetData });
   });
+
+
+  socket.on('update-balance', (data) => {
+    console.log(data, 'data');
+    io.emit(`update-balance-${data.userId}`, { balance: data.balance });
+  })
 });
 function validateInput(inputString) {
   const pattern = /^\d,\d,\d,\d,\d$/;

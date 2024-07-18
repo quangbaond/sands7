@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require('express');
 var router = express.Router();
 const users = require('../models/users');
@@ -6,6 +7,24 @@ const jwtMiddleware = require('../middleware/jwtMiddleware');
 const balanceFluctuations = require('../models/balanceFluctuation');
 const requestMoney = require('../models/requestMoney');
 const md5 = require('md5');
+
+// const io = require('socket.io')(server, {
+//   cors: {
+//     origin: "*",
+//     methods: ["GET", "POST"]
+//   }
+// });
+// how to use socket.io in express
+// https://socket.io/docs/v4/server-api/
+const { Server } = require("socket.io");
+const http = require("http");
+const server = http.createServer(express);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 
 /* GET users listing. */
 // list
