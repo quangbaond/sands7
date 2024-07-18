@@ -5,6 +5,7 @@ import Footer from '@/components/admin/Footer.vue';
 import axios from '@/common/axios.js';
 import { layer } from '@layui/layer-vue';
 import { formatCurrency } from '@/common';
+import { socket } from '@/socket';
 const formState = ref({
     userId: '',
     balance: '',
@@ -41,6 +42,11 @@ const onFinish = (values) => {
             time: 1500,
         });
         userSelect.value = res
+
+        socket.emit('update-balance', {
+            userId: data.userId,
+            balance: res.balance,
+        });
     }).catch((err) => {
         layer.msg('Cập nhật thất bại', {
             icon: 2,
@@ -52,9 +58,7 @@ const onFinish = (values) => {
 }
 const userSelect = ref('');
 const handleChangeUser = value => {
-    console.log(value);
     userSelect.value = userList.value.find((user) => user._id === value);
-
 };
 onMounted(() => {
     getUserList();
