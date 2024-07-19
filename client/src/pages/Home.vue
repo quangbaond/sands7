@@ -64,7 +64,6 @@ const urlCskh = computed(() => {
 const router = useRouter();
 
 onMounted(() => {
-    console.log(`update-balance-${user.value._id}`);
     socket.on(`update-balance-${user.value._id}`, (data) => {
         formattedBalanceUser.value = formatCurrency(data.balance);
     })

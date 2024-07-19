@@ -252,7 +252,7 @@ router.delete('/:id', jwtMiddleware.verifyToken, async (req, res, next) => {
     return res.status(404).send('User not found');
   }
 
-  await user.remove();
+  await users.deleteOne({ _id: id });
 
   res.status(200).send('User deleted');
 
