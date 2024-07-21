@@ -16,15 +16,79 @@ const formState = ref({
     updateAt: '',
     ipAddress: '',
     role: '',
+    permissions: {
+        user: [],
+        inviteCode: [],
+        game: [],
+        setting: [],
+        requestMoney: [],
+        userBalance: [],
+        settingNoti: [],
+        cskh: [],
+    },
 });
+const permissions = {
+    user: [
+        { label: 'Tạo mới', value: 'create' },
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xóa', value: 'delete' },
+        { label: 'Xem', value: 'view'}
+    ],
+    inviteCode: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xem', value: 'view' }
+    ],
+    game: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xem', value: 'view' },
+    ],
+    setting: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xem', value: 'view' },
+    ],
+    requestMoney: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xóa', value: 'delete' },
+        { label: 'Xem', value: 'view' },
+    ],
+    userBalance: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+    ],
+    settingNoti: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xem', value: 'view' },
+    ],
+    cskh: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xem', value: 'view' }
+    ],
+}
 const router = useRouter();
 const id = router.currentRoute.value.params.id;
-
+const userPermissions = ref({
+    user: [],
+    inviteCode: [],
+    game: [],
+    setting: [],
+    requestMoney: [],
+    userBalance: [],
+    settingNoti: [],
+    cskh: [],
+})
 onMounted(() => {
     axios.get(`/users/${id}`).then((res) => {
         console.log(res);
         formState.value = res;
-        console.log(formState.value);
+        userPermissions.value = res.permissions ?? {
+            user: [],
+            inviteCode: [],
+            game: [],
+            setting: [],
+            requestMoney: [],
+            userBalance: [],
+            settingNoti: [],
+            cskh: [],
+        };
     });
 });
 watch(() => formState.value, (newVal) => {
@@ -40,7 +104,7 @@ const onFinish = async (values) => {
     console.log('Success:', values);
     const data = {
         ...values,
-        // balance: values.balance ? values.balance.replace(/\D/g, '') : 0,
+        permissions: userPermissions.value,
     };
 
     const layerLoad = layer.load(1);
@@ -62,6 +126,21 @@ const onFinish = async (values) => {
 const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
 };
+
+
+const changePermission = (key, value) => {
+    const permissions = userPermissions.value;
+    console.log(permissions, key, value);
+    try {
+        userPermissions.value = {
+            ...permissions,
+            [key]: permissions[key].includes(value) ? permissions[key].filter(item => item !== value) : [...permissions[key], value]
+        }
+    } catch (error) {
+        // userPermissions.value[key].
+    }
+
+}
 </script>
 
 <template>
@@ -88,7 +167,6 @@ const onFinishFailed = (errorInfo) => {
                             </a-col>
                             <a-col :span="12">
                                 <a-form-item label="Email" name="email" :rules="[
-                                    { required: true, message: 'Vui lòng nhập email' },
                                     { type: 'email', message: 'Email không đúng định dạng' }
                                 ]">
                                     <a-input v-model:value="formState.email" />
@@ -108,6 +186,20 @@ const onFinishFailed = (errorInfo) => {
                                     </a-select>
                                 </a-form-item>
                             </a-col>
+                            <a-col :span="24" v-if="formState.role === 'admin'">
+                                <a-row>
+                                    <a-col :span="12" v-for="(permission, i) in permissions" :key="i">
+                                        <a-form-item name="permissions" :label="i">
+                                            <a-checkbox-group v-model:value="userPermissions[i]">
+                                                <a-checkbox v-for="item in permission" :key="item.value"
+                                                    :value="item.value" @change="changePermission(i, item.value)">
+                                                    {{ item.label }}
+                                                </a-checkbox>
+                                            </a-checkbox-group>
+                                        </a-form-item>
+                                    </a-col>
+                                </a-row>
+                            </a-col>
                             <a-col :span="12">
                                 <a-form-item label="Ngày tạo">
                                     <a-input v-model:value="formState.createAt" disabled />
@@ -126,8 +218,8 @@ const onFinishFailed = (errorInfo) => {
                             <!-- // bank info -->
 
                             <a-col :span="12">
-                                <a-form-item label="CHọn ngân hàng
-                                " name="bankName" :rules="[{ required: true, message: 'Vui lòng chọn ngân hàng' }]">
+                                <a-form-item label="Chọn ngân hàng
+                                " name="bankName">
                                     <a-select v-model:value="formState.bankName">
                                         <a-select-option :value="bank.short_name" v-for="bank in banks"
                                             :key="bank.short_name">
@@ -138,22 +230,19 @@ const onFinishFailed = (errorInfo) => {
                             </a-col>
                             <a-col :span="12">
 
-                                <a-form-item label="Chi nhánh" name="bankBranch"
-                                    :rules="[{ required: true, message: 'Vui lòng nhập chi nhánh' }]">
+                                <a-form-item label="Chi nhánh" name="bankBranch">
                                     <a-input v-model:value="formState.bankBranch"></a-input>
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
 
-                                <a-form-item label="Số tài khoản" name="bankAccountNumber"
-                                    :rules="[{ required: true, message: 'Vui lòng nhập số tài khoản' }]">
+                                <a-form-item label="Số tài khoản" name="bankAccountNumber">
                                     <a-input v-model:value="formState.bankAccountNumber"></a-input>
                                 </a-form-item>
                             </a-col>
                             <a-col :span="12">
 
-                                <a-form-item label="Tên tài khoản" name="bankAccountName"
-                                    :rules="[{ required: true, message: 'Vui lòng nhập tên tài khoản' }]">
+                                <a-form-item label="Tên tài khoản" name="bankAccountName">
                                     <a-input v-model:value="formState.bankAccountName"></a-input>
                                 </a-form-item>
                             </a-col>

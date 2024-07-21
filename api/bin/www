@@ -113,8 +113,11 @@ io.on('connection', (socket) => {
 
 
   socket.on('update-balance', (data) => {
-    console.log(data, 'data');
     io.emit(`update-balance-${data.userId}`, { balance: data.balance });
+  })
+  socket.on('update-setting', (data) => {
+    console.log(data, 'data');
+    io.emit(`update-setting-${data.userId}`, { value: data.value });
   })
 });
 function validateInput(inputString) {

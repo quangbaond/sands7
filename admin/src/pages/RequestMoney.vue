@@ -160,7 +160,11 @@ const onSearch = (value) => {
         username: value,
     });
 }
+const user = ref(null)
 onMounted(() => {
+    axios.get('/me/profile').then(res => {
+        user.value = res.user;
+    });
     run({ page: 1, limit: 10 })
 });
 const changeType = (value) => {
@@ -269,7 +273,7 @@ const changeRangePicker = (value) => {
                                     </div>
                                 </span>
                                 <span v-else>
-                                    <div>
+                                    <div v-if="user && user.permissions.requestMoney.includes('edit')">
                                         <a @click="edit(record.key)">Chỉnh sửa</a>
                                     </div>
                                     <!-- <div>

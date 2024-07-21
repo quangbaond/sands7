@@ -41,6 +41,11 @@ const router = createRouter({
             meta: { requiresAuth: true, isAdmin: true },
         },
         {
+            path: "/setting-noti",
+            component: () => import("./pages/SettingNoti.vue"),
+            meta: { requiresAuth: true, isAdmin: true },
+        },
+        {
             path: "/request-money",
             component: () => import("./pages/RequestMoney.vue"),
             meta: { requiresAuth: true, isAdmin: true },

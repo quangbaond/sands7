@@ -25,6 +25,7 @@ const users = new Schema({
     bankBranch: { type: String, required: false },
     bankAccountName: { type: String, required: false },
     ipAddress: { type: String, required: false },
+    permissions: { type: Object, default: {} },
 }, { collection: 'users', virtuals: true, toJSON: { virtuals: true } })
 
 users.index({ email: 1, username: 1 })

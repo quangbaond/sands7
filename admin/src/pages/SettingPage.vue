@@ -8,6 +8,7 @@ import { formatDateTime } from '@/common';
 import { listGame } from '../common/constants';
 import { useRouter } from 'vue-router';
 import { layer } from '@layui/layer-vue';
+import { socket } from '@/socket.js';
 
 const router = useRouter();
 const settingGame = ref(null)
@@ -23,10 +24,14 @@ const pagination = ref({
     showTotal: total => `Tổng kết qủa ${total} kết quả`,
 });
 const loading = ref(false);
+const user = ref(null);
 
 onMounted(() => {
-    getUserList();
-    run(pagination.value);
+    axios.get('/me/profile').then(res => {
+        user.value = res.user;
+        getUserList();
+        run(pagination.value);
+    });
 });
 
 
@@ -133,7 +138,11 @@ const save = key => {
     console.log(data);
     data.userId = data.user._id;
     axios.put(`/setting/${key}`, data).then((res) => {
-
+        console.log(res);
+        socket.emit(`update-setting`, {
+            userId: data.userId,
+            value: data.value,
+        });
         run({
             ...pagination.value,
         });
@@ -144,7 +153,8 @@ const save = key => {
 };
 
 const cancel = key => {
-    delete editableData[key];
+    delete editableData[key]; getUserList();
+    run(pagination.value);
 };
 
 const dle = (id) => {
@@ -192,7 +202,7 @@ const dle = (id) => {
                                 </template>
                             </div>
                         </template>
-                        <template v-if="['userId'].includes(column.dataIndex)">
+                        <!-- <template v-if="['userId'].includes(column.dataIndex)">
                             <div>
                                 <a-select v-if="editableData[record.key]"
                                     v-model:value="editableData[record.key][column.dataIndex]"
@@ -205,7 +215,7 @@ const dle = (id) => {
                                     {{ text }}
                                 </template>
                             </div>
-                        </template>
+                        </template> -->
 
                         <template v-else-if="column.dataIndex === 'operation'">
                             <div class="editable-row-operations">
@@ -221,15 +231,15 @@ const dle = (id) => {
 
                                 </span>
                                 <span v-else>
-                                    <div>
+                                    <div v-if="user && user.permissions.setting.includes('edit')">
                                         <a @click="edit(record.key)">Chỉnh sửa</a>
                                     </div>
-                                    <div>
+                                    <!-- <div>
                                         <a-popconfirm title="Bạn có muốn xóa người dùng này" ok-text="Xóa"
                                             cancel-text="Hủy" @confirm="dle(record._id)">
                                             <a href="#" style="color: red;">Xóa</a>
                                         </a-popconfirm>
-                                    </div>
+                                    </div> -->
                                 </span>
                             </div>
                         </template>

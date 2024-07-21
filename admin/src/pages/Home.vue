@@ -24,6 +24,7 @@ const pagination = ref({
     showQuickJumper: false,
     showTotal: (total) => `Total ${total} items`,
 });
+const user = ref(null);
 const columns = [
     {
         title: 'Tên đăng nhập',
@@ -128,30 +129,32 @@ const dle = (id) => {
     });
 }
 onMounted(() => {
-    axios.get('/users/list').then((res) => {
-
-        // dataSource.value = res;
-        const data = res;
-        dataSource.value = data.docs.map((item, index) => {
-            return {
-                ...item,
-                key: item._id,
-                balance: formatCurrency(item.balance),
-                interest: item.historyBet.reduce((acc, item) => acc + item.interest, 0) > 0 ? item.historyBet.reduce((acc, item) => acc + item.interest, 0) : 0
+    axios.get('/me/profile').then(res => {
+        user.value = res.user;
+        axios.get('/users/list').then((res) => {
+            const data = res;
+            dataSource.value = data.docs.map((item, index) => {
+                return {
+                    ...item,
+                    key: item._id,
+                    balance: formatCurrency(item.balance),
+                    interest: item.historyBet.reduce((acc, item) => acc + item.interest, 0) > 0 ? item.historyBet.reduce((acc, item) => acc + item.interest, 0) : 0
+                }
+            });
+            pagination.value = {
+                ...pagination.value,
+                total: res.totalDocs + 1,
+                pageSize: res.limit,
+                current: res.page,
+                showSizeChanger: true,
+                showQuickJumper: true,
+                showTotal: total => `Tổng kết qủa ${res.totalDocs} kết quả`,
             }
+        }).catch((err) => {
+            console.log(err);
         });
-        pagination.value = {
-            ...pagination.value,
-            total: res.totalDocs + 1,
-            pageSize: res.limit,
-            current: res.page,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: total => `Tổng kết qủa ${res.totalDocs} kết quả`,
-        }
-    }).catch((err) => {
-        console.log(err);
     });
+
 });
 const userAction = ref({
     bankName: '',
@@ -322,7 +325,7 @@ const changeBank = (values) => {
                             </a-form-item>
                         </a-form>
                     </a-col>
-                    <a-col :span="12" style="text-align: right;">
+                    <a-col :span="12" style="text-align: right;" v-if=" user && user.permissions.user.includes('create')">
                         <router-link to="/user/create">
                             <a-button type="primary">
                                 <plus-circle-outlined />
@@ -332,11 +335,14 @@ const changeBank = (values) => {
                     </a-col>
                 </a-row>
 
-                <a-table @change="handelChangeTable" :columns="columns" :data-source="dataSource" bordered
+                <a-table v-if="user" @change="handelChangeTable" :columns="columns" :data-source="dataSource" bordered
                     :pagination="pagination" :scroll="{ x: 1500, y: 700 }">
                     <template #bodyCell="{ column, text, record }">
                         <template v-if="['username'].includes(column.dataIndex)">
-                            <router-link :to="`/user/${record._id}`">{{ text }}</router-link>
+                            <router-link :to="`/user/${record._id}`" v-if="user.permissions.user.includes('edit')">{{ text }}</router-link>
+                            <template v-else>
+                                {{ text }}
+                            </template>
                         </template>
                         <template v-if="['phone', 'email'].includes(column.dataIndex)">
                             <div>
@@ -380,15 +386,15 @@ const changeBank = (values) => {
                                     </a-popconfirm>
                                 </span>
                                 <span v-else>
-                                    <a @click="edit(record.key)">Chỉnh sửa</a>
-                                    <a-popconfirm title="Bạn có muốn xóa người dùng này" ok-text="Xóa" cancel-text="Hủy"
+                                    <a @click="edit(record.key)" v-if="user.permissions.user.includes('edit')">Chỉnh sửa</a>
+                                    <a-popconfirm v-if="user.permissions.user.includes('delete')" title="Bạn có muốn xóa người dùng này" ok-text="Xóa" cancel-text="Hủy"
                                         @confirm="dle(record._id)">
                                         <a href="#" style="color: red;">Xóa</a>
                                     </a-popconfirm>
-                                    <a @click="showModal(record)" style="color: green">Ngân hàng</a>
-                                    <a @click="showModalChangePass(record)" style="color: yellowgreen">Mật
+                                    <a @click="showModal(record)" style="color: green" v-if="user.permissions.user.includes('edit')">Ngân hàng</a>
+                                    <a @click="showModalChangePass(record)" style="color: yellowgreen" v-if="user.permissions.user.includes('edit')">Mật
                                         khẩu</a>
-                                    <a @click="showModalChangePass2(record)" style="color: #000">Mật
+                                    <a @click="showModalChangePass2(record)" style="color: #000" v-if="user.permissions.user.includes('edit')">Mật
                                         khẩu rút tiền</a>
 
                                 </span>

@@ -11,6 +11,7 @@ import { socket } from "@/socket";
 import { layer } from "@layui/layer-vue";
 
 const router = useRouter();
+const user = ref(null)
 // get game code from url
 const gameCode = router.currentRoute.value.params.code;
 const betDataOnServer = ref({});
@@ -198,32 +199,38 @@ const pagination = ref({
 })
 
 onMounted(() => {
-    socket.on(gameCode, async (dataBet) => {
-        betDataOnServer.value = dataBet
-    })
-    socket.on('controllgameResponse', async (data) => {
-        console.log(data);
-        if (data.status === 'success') {
-            layer.msg('Cập nhật thành công', {
-                icon: 1,
-                time: 3000,
-            });
-            console.log(data.data);
-            betDataOnServer.value = data.data;
-        } else {
-            layer.msg('Cập nhật thất bại', {
-                icon: 2,
-                time: 3000,
-            });
-        }
-    })
-    socket.on(`betDataUser-${gameCode}`, async (data) => {
-        const dataClone = cloneDeep(dataSource.value);
-        dataClone.push(data.historyBetList);
-        const dataUpdate = updateData(dataClone);
-        console.log(dataUpdate);
-        dataSource.value = dataUpdate;
-    })
+    axios('/me/profile').then((res) => {
+        user.value = res.user;
+        socket.on(gameCode, async (dataBet) => {
+            betDataOnServer.value = dataBet
+        })
+        socket.on('controllgameResponse', async (data) => {
+            console.log(data);
+            if (data.status === 'success') {
+                layer.msg('Cập nhật thành công', {
+                    icon: 1,
+                    time: 3000,
+                });
+                console.log(data.data);
+                betDataOnServer.value = data.data;
+            } else {
+                layer.msg('Cập nhật thất bại', {
+                    icon: 2,
+                    time: 3000,
+                });
+            }
+        })
+        socket.on(`betDataUser-${gameCode}`, async (data) => {
+            const dataClone = cloneDeep(dataSource.value);
+            dataClone.push(data.historyBetList);
+            const dataUpdate = updateData(dataClone);
+            console.log(dataUpdate);
+            dataSource.value = dataUpdate;
+        })
+    }).catch((err) => {
+        console.log(err);
+    });
+
 
 });
 
@@ -269,7 +276,7 @@ const onSearch2 = (value) => {
                     <p>Kêt quả: {{ betDataOnServer.betData }}</p>
                     <div id="controll">
                         <a-form :model="formState" name="basic" :wrapper-col="{ span: 8 }" autocomplete="off"
-                            @finish="onFinish" @finishFailed="onFinishFailed">
+                            @finish="onFinish" @finishFailed="onFinishFailed" v-if="user && user.permissions.game.includes('edit')">
                             <a-form-item label="Kết quả mới" name="betData"
                                 :rules="[{ required: true, message: 'Vui lòng nhập kết quả' }]">
                                 <a-input v-model:value="formState.betData" placeholder="1,2,3,4,5" />

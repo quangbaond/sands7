@@ -7,10 +7,14 @@ import { layer } from '@layui/layer-vue';
 const formState = ref({
     url: '',
 });
+const user = ref(null);
 
 onMounted(() => {
-    axios.get('/invite').then((res) => {
-        formState.value = res;
+    axios.get('/me/profile').then((res) => {
+        user.value = res.user;
+        axios.get('/invite').then((res) => {
+            formState.value = res;
+        });
     });
 });
 
@@ -60,7 +64,7 @@ const onFinishFailed = errorInfo => {
                                     <a-radio value="inactive">Tắt</a-radio>
                                 </a-radio-group>
                             </a-form-item>
-                            <a-form-item>
+                            <a-form-item v-if="user && user.permissions.inviteCode.includes('edit')">
                                 <a-button type="primary" html-type="submit">Gửi</a-button>
                             </a-form-item>
                         </a-form>

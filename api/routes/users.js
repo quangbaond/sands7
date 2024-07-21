@@ -75,7 +75,7 @@ router.get('/list', jwtMiddleware.verifyToken, async (req, res, next) => {
 // update
 router.put('/:id', jwtMiddleware.verifyToken, async (req, res, next) => {
   const { id } = req.params;
-  const { phone, balance, status, email, role } = req.body;
+  const { phone, status, email, role, permissions } = req.body;
 
   // update user
   const user = await users.findById(id);
@@ -83,28 +83,7 @@ router.put('/:id', jwtMiddleware.verifyToken, async (req, res, next) => {
     return res.status(404).send('User not found');
   }
 
-  if (isNaN(balance)) {
-    return res.status(400).send('Balance is not a number');
-  }
-  let amount = balance - user.balance;
-  amount = amount < 0 ? Math.abs(amount) : amount;
-  let typeRequest = amount > 0 ? 'deposit' : 'withdraw';
-  if (amount !== 0) {
-
-    const formatDate = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''); // 2019-12-10 10:00:00
-
-    const requestMoneyData = {
-      userID: id,
-      amount,
-      type: typeRequest,
-      status: 'accept',
-      description: 'Cập nhật số dư',
-      note: `Bạn được cập nhật số dư ${formatCurrency(user.balance)} thành ${formatCurrency(parseFloat(balance))} vào lúc ${formatDate}`,
-    }
-    await requestMoney.create(requestMoneyData);
-  }
-
-  const userUpdate = await users.findByIdAndUpdate(id, { phone, balance: parseFloat(balance), status, email, role });
+  const userUpdate = await users.findByIdAndUpdate(id, { phone, status, email, role, permissions });
 
   if (!userUpdate) {
     return res.status(404).send('User not found');
@@ -311,7 +290,7 @@ router.put('/update-balance/:id', jwtMiddleware.verifyToken, async (req, res, ne
 
 //create user
 router.post('/create', jwtMiddleware.verifyTokenAdmin, async (req, res, next) => {
-  const { username, password, email, phone, role } = req.body;
+  const { username, password, email, phone, role, permissions } = req.body;
 
   try {
     const user = await users.create({
@@ -320,7 +299,8 @@ router.post('/create', jwtMiddleware.verifyTokenAdmin, async (req, res, next) =>
       password2: md5(password),
       phone,
       email,
-      role
+      role,
+      permissions
     });
     res.status(201).json(user);
   } catch (error) {

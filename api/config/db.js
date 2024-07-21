@@ -9,6 +9,7 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
     init.intSettingGame();
     init.initCskh();
     init.initInviteCode();
+    init.initSettingNoti();
 }).catch((err) => {
     console.error('Lỗi kết nối cơ sở dữ liệu 🚨');
     console.error(err);

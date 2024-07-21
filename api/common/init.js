@@ -3,6 +3,7 @@ const md5 = require('md5');
 const settings = require('../models/settings');
 const cskh = require('../models/cskh');
 const inviteCode = require('../models/inviteCode');
+const settingNoti = require('../models/settingNoti');
 
 const initAdmin = async () => {
 
@@ -81,10 +82,27 @@ const initInviteCode = async () => {
 
     return "Đã tạo cài đặt inviteCode thành công!";
 }
+const initSettingNoti = async () => {
+    if (await settingNoti.findOne()) {
+        console.log("Đã có cài đặt settingNoti trong hệ thống!");
+        return;
+    }
+
+    await settingNoti.create({
+        widthDrawSound: 1,
+        depositSound: 1,
+        addBankSound: 1
+    })
+
+    console.info("Đã tạo cài đặt settingNoti thành công!");
+
+    return "Đã tạo cài đặt settingNoti thành công!";
+}
 
 module.exports = {
     initAdmin,
     intSettingGame,
     initCskh,
     initInviteCode,
+    initSettingNoti
 }

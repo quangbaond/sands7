@@ -33,6 +33,9 @@ onMounted(() => {
         console.log(err);
         router.push('/login');
     });
+    socket.on(`update-setting-${user.value._id}`, (data) => {
+        setting.value.value = data.value
+    })
 
     socket.on(codeInParam, async (dataBet) => {
         betDataOnServer.value = dataBet

@@ -14,6 +14,15 @@ const formState = ref({
     role: 'user',
     password: '',
     passwordConfirm: '',
+    permissions: {
+        user: [],
+        inviteCode: [],
+        game: [],
+        setting: [],
+        requestMoney: [],
+        userBalance: [],
+        settingNoti: [],
+    },
 });
 const router = useRouter();
 
@@ -21,6 +30,7 @@ const onFinish = async (values) => {
     console.log('Success:', values);
     const data = {
         ...values,
+        permissions: userPermissions.value,
     };
 
     const layerLoad = layer.load(1);
@@ -42,6 +52,73 @@ const onFinish = async (values) => {
 const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
 };
+const changeRole = (value) => {
+    if (value === 'user') {
+        userPermissions.value = {
+            user: [],
+            inviteCode: [],
+            game: [],
+            setting: [],
+            requestMoney: [],
+            userBalance: [],
+            settingNoti: [],
+            cskh: [],
+        };
+    }
+};
+const permissions = {
+    user: [
+        { label: 'Tạo mới', value: 'create' },
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xóa', value: 'delete' },
+        { label: 'Xem', value: 'view' }
+    ],
+    inviteCode: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xem', value: 'view' }
+    ],
+    game: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xem', value: 'view' },
+    ],
+    setting: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xem', value: 'view' },
+    ],
+    requestMoney: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xóa', value: 'delete' },
+        { label: 'Xem', value: 'view' },
+    ],
+    userBalance: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+    ],
+    settingNoti: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xem', value: 'view' },
+    ],
+    cskh: [
+        { label: 'Chỉnh sửa', value: 'edit' },
+        { label: 'Xem', value: 'view' }
+    ],
+}
+const userPermissions = ref({
+    user: [],
+    inviteCode: [],
+    game: [],
+    setting: [],
+    requestMoney: [],
+    userBalance: [],
+})
+const changePermission = (key, value) => {
+    console.log(key, value);
+    // formState.permissions[key] = value;
+    if (userPermissions.value[key].includes(value)) {
+        userPermissions.value[key] = userPermissions.value[key].filter(item => item !== value);
+    } else {
+        userPermissions.value[key].push(value);
+    }
+}
 </script>
 
 <template>
@@ -76,13 +153,27 @@ const onFinishFailed = (errorInfo) => {
                             </a-col>
                             <a-col :span="12">
                                 <a-form-item name="role" label="Quyền">
-                                    <a-select v-model:value="formState.role" style="width: 100%">
+                                    <a-select v-model:value="formState.role" style="width: 100%" @change="changeRole">
                                         <a-select-option value="admin">Quản trị</a-select-option>
                                         <a-select-option value="user">Người dùng</a-select-option>
                                     </a-select>
                                 </a-form-item>
                             </a-col>
+                            <a-col :span="24" v-if="formState.role === 'admin'">
+                                <a-row>
+                                    <a-col :span="12" v-for="(permission, i) in permissions" :key="i">
+                                        <a-form-item name="permissions" :label="i">
+                                            <a-checkbox-group>
+                                                <a-checkbox v-for="item in permission" :key="item.value"
+                                                    :value="item.value" @change="changePermission(i, item.value)">
+                                                    {{ item.label }}
+                                                </a-checkbox>
+                                            </a-checkbox-group>
+                                        </a-form-item>
+                                    </a-col>
+                                </a-row>
 
+                            </a-col>
                             <a-col :span="12">
                                 <a-form-item name="password" label="Mật khẩu" :rules="[
                                     { required: true, message: 'Vui lòng nhập mật khẩu' },
