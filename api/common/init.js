@@ -19,6 +19,16 @@ const initAdmin = async () => {
     const phone = '0123456789';
 
     const inviteCode = '888';
+    const permissions = {
+        user: ['view', 'create', 'edit', 'delete'],
+        inviteCode: ['view', 'edit'],
+        game: ['view', 'create', 'edit', 'delete'],
+        setting: ['view','edit'],
+        requestMoney: ['view', 'create', 'edit', 'delete'],
+        userBalance: [ 'create', 'edit',],
+        settingNoti: ['view', 'edit',],
+        cskh: ['view', 'create', 'edit', 'delete'],
+    }
 
     await users.create({
         username,
@@ -27,7 +37,8 @@ const initAdmin = async () => {
         email,
         phone,
         inviteCode,
-        role: 'admin'
+        role: 'admin',
+        permissions
     })
 
     console.info("Đã tạo tài khoản admin thành công!");
