@@ -161,7 +161,6 @@ router.put('/update-request-money/:id', jwtMiddleware.verifyToken, async (req, r
   const requestMoneyUpdate = await requestMoney.findByIdAndUpdate(id,
     {
       status, note,
-      statusProcess: 1,
       updateAt: new Date(),
       beforeBalance: user.balance,
       afterBalance: afterBalance,
