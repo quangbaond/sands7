@@ -152,7 +152,7 @@ router.put('/update-request-money/:id', jwtMiddleware.verifyToken, async (req, r
 
   let afterBalance = user.balance;
 
-  if (status === 'reject' && requestMoneyFind.type === 'withdraw' && requestMoneyFind.statusProcess === 0) {
+  if ((status === 'reject' && requestMoneyFind.type === 'withdraw') && requestMoneyFind.statusProcess === 0) {
     afterBalance = user.balance + requestMoneyFind.amount;
     user.balance = afterBalance;
     await user.save();

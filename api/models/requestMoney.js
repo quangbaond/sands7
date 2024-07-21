@@ -13,7 +13,7 @@ const requestMoney = new Schema({
     type: { type: String, default: 'deposit' },
     afterBalance: { type: Number, required: 0 },
     beforeBalance: { type: Number, required: 0 },
-    statusProcess: { type: String, default: 'pending' },
+    statusProcess: { type: Number, default: 0 },
 }, { collection: 'requestMoney', virtuals: true, toJSON: { virtuals: true } })
 
 requestMoney.virtual('user', {
