@@ -288,10 +288,11 @@ router.put('/update-balance/:id', jwtMiddleware.verifyToken, async (req, res, ne
   }
 
   let typeRequest = type === 'add' ? 'deposit' : 'withdraw';
+  const afterBalance = type === 'add' ? user.balance + parseFloat(balance) : user.balance - parseFloat(balance);
+
   if (balance !== 0) {
 
     const formatDate = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
-    const afterBalance = type === 'add' ? user.balance + parseFloat(balance) : user.balance - parseFloat(balance);
 
     const requestMoneyData = {
       userID: id,
