@@ -144,7 +144,30 @@ router.put('/update-request-money/:id', jwtMiddleware.verifyToken, async (req, r
     return res.status(404).send('Request money not found');
   }
 
-  const requestMoneyUpdate = await requestMoney.findByIdAndUpdate(id, { status, note });
+  const user = await users.findById(requestMoneyFind.userID);
+
+  if (!user) {
+    return res.status(404).send('User not found');
+  }
+
+  let afterBalance = user.balance;
+
+  if (status === 'reject' && requestMoneyFind.type === 'withdraw' && requestMoneyFind.statusProcess === 0) {
+    afterBalance = user.balance + requestMoneyFind.amount;
+    user.balance = afterBalance;
+    await user.save();
+  }
+
+  const requestMoneyUpdate = await requestMoney.findByIdAndUpdate(id,
+    {
+      status, note,
+      statusProcess: 1,
+      updateAt: new Date(),
+      beforeBalance: user.balance,
+      afterBalance: status === 'reject' ? user.balance - requestMoneyFind.amount : user.balance,
+      statusProcess: status !== requestMoneyFind.status ? 1 : 0
+    }
+  );
 
   if (!requestMoneyUpdate) {
     return res.status(404).send('Request money not found');
@@ -268,6 +291,7 @@ router.put('/update-balance/:id', jwtMiddleware.verifyToken, async (req, res, ne
   if (balance !== 0) {
 
     const formatDate = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+    const afterBalance = type === 'add' ? user.balance + parseFloat(balance) : user.balance - parseFloat(balance);
 
     const requestMoneyData = {
       userID: id,
@@ -276,11 +300,14 @@ router.put('/update-balance/:id', jwtMiddleware.verifyToken, async (req, res, ne
       status: 'accept',
       description: 'Cập nhật số dư',
       note: note ?? `Bạn được cập nhật số dư ${formatCurrency(user.balance)} thành ${formatCurrency(parseFloat(balance))} vào lúc ${formatDate}`,
+      beforeBalance: user.balance,
+      afterBalance: afterBalance,
+      statusProcess: 1
     }
     await requestMoney.create(requestMoneyData);
   }
 
-  user.balance = type === 'add' ? user.balance + parseFloat(balance) : user.balance - parseFloat(balance);
+  user.balance = afterBalance
 
   await user.save();
 

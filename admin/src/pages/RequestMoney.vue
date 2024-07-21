@@ -24,6 +24,22 @@ const columns = [
         }
     },
     {
+        title: 'Số dư trước',
+        dataIndex: 'beforeBalance',
+        key: 'balance',
+        customRender: (text, value) => {
+            return formatCurrency(text.text);
+        }
+    },
+    {
+        title: 'Số dư sau',
+        dataIndex: 'afterBalance',
+        key: 'balance',
+        customRender: (text, value) => {
+            return formatCurrency(text.text);
+        }
+    },
+    {
         title: 'Trạng thái',
         dataIndex: 'status',
         key: 'status',
@@ -48,7 +64,7 @@ const columns = [
         key: 'reson',
     },
     {
-        title: 'Tiền thực',
+        title: 'Nạp/Rút',
         dataIndex: 'type',
         key: 'type',
     },

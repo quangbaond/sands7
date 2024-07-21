@@ -182,22 +182,15 @@ router.post('/withdraw', jwtMiddleware.verifyToken, async (req, res, next) => {
                 userID: userFind._id,
                 amount: amount,
                 reson: reson,
-                type: type
+                type: type,
+                beforeBalance: userFind.balance,
+                afterBalance: userFind.balance - amount,
+                statusProcess: 0
             });
             await newRequestMoney.save();
 
             userFind.balance -= amount;
             await userFind.save();
-
-            const balanceFluctuationData = new balanceFluctuations({
-                userID: userFind._id,
-                amount: amount,
-                type: 'minus',
-                description: `Bạn đã tạo yêu cầu rút tiền`,
-                reson: reson,
-            });
-
-            await balanceFluctuationData.save();
 
             res.status(200).send({ message: "Yêu cầu rút tiền thành công", user: userFind });
         } else {
