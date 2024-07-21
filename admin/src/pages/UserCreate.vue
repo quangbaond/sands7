@@ -102,6 +102,28 @@ const permissions = {
         { label: 'Xem', value: 'view' }
     ],
 }
+const convertKey = (key) => {
+    switch (key) {
+        case 'user':
+            return 'Người dùng';
+        case 'inviteCode':
+            return 'Mã mời';
+        case 'game':
+            return 'Game';
+        case 'setting':
+            return 'Cài đặt';
+        case 'requestMoney':
+            return 'Nạp rút';
+        case 'userBalance':
+            return 'Cộng trừ tiền';
+        case 'settingNoti':
+            return 'Cài đặt thông báo';
+        case 'cskh':
+            return 'Chăm sóc khách hàng';
+        default:
+            return key;
+    }
+}
 const userPermissions = ref({
     user: [],
     inviteCode: [],
@@ -162,7 +184,7 @@ const changePermission = (key, value) => {
                             <a-col :span="24" v-if="formState.role === 'admin'">
                                 <a-row>
                                     <a-col :span="12" v-for="(permission, i) in permissions" :key="i">
-                                        <a-form-item name="permissions" :label="i">
+                                        <a-form-item name="permissions" :label="convertKey(i)">
                                             <a-checkbox-group>
                                                 <a-checkbox v-for="item in permission" :key="item.value"
                                                     :value="item.value" @change="changePermission(i, item.value)">
