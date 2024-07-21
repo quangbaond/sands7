@@ -8,6 +8,8 @@ import { ref, reactive } from 'vue';
 import axios from '@/common/axios.js';
 import { useRouter } from 'vue-router';
 import { layer } from '@layui/layer-vue';
+import { socket } from '@/socket.js';
+
 const user = ref(getStorage('user'))
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL ?? 'http://localhost:3000'
 const formattedBalanceUser = ref(formatCurrency(user.balance))
@@ -49,6 +51,7 @@ const onFinish = values => {
             icon: 1,
             time: 4000
         });
+        socket.emit('withdraw', res);
         if (res.user) {
             user.value = res.user;
         }

@@ -13,6 +13,7 @@ const Sx5d = require('../models/games/Sx5d');
 const historyBet = require('../models/games/historyBet');
 const users = require('../models/users');
 const settings = require('../models/settings');
+const settingNoti = require('../models/settingNoti');
 
 const fs = require('fs');
 const path = require('path');
@@ -118,6 +119,34 @@ io.on('connection', (socket) => {
   socket.on('update-setting', (data) => {
     console.log(data, 'data');
     io.emit(`update-setting-${data.userId}`, { value: data.value });
+  })
+  socket.on('deposit', async (data) => {
+    const settingNotiData = await settingNoti.findOne();
+    if (!settingNotiData) return
+    if (settingNotiData.depositSound === 2) {
+      io.emit(`depositVoice`, {
+        message: data.message,
+      });
+    } else if (settingNotiData.depositSound === 1) {
+      console.log('deposit');
+      io.emit(`deposit`, {
+        message: data.message,
+      });
+    }
+  })
+
+  socket.on('withdraw', async (data) => {
+    const settingNotiData = await settingNoti.findOne();
+    if (!settingNotiData) return
+    if (settingNotiData.widthDrawSound === 2) {
+      io.emit(`withdrawVoice`, {
+        message: 'Có người vừa rút tiền, vui lòng kiểm tra',
+      });
+    } else if (settingNotiData.widthDrawSound === 1) {
+      io.emit(`withdraw`, {
+        message: 'Có người vừa rút tiền, vui lòng kiểm tra',
+      });
+    }
   })
 });
 function validateInput(inputString) {

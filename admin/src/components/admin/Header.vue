@@ -40,7 +40,7 @@ onMounted(() => {
             <a-menu-item key="6" v-if="user.permissions.requestMoney.includes('cskh')">
                 <router-link to="/cskh">Chăm sóc khách hàng</router-link>
             </a-menu-item>
-            <a-menu-item key="7" v-if="user.permissions.userBalance.includes('view')">
+            <a-menu-item key="7" v-if="user.permissions.userBalance.includes('edit')">
                 <router-link to="/user-balance">Cộng trừ tiền</router-link>
             </a-menu-item>
             <a-menu-item key="8" v-if="user.permissions.inviteCode.includes('view')">

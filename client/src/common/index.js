@@ -1,5 +1,6 @@
 import { layer } from "@layui/layer-vue";
 import moment from "moment";
+import {socket} from "@/socket";
 // save data to location storage by key
 export const setStorage = (key, data) => {
     if (typeof data !== 'string') {
@@ -37,5 +38,8 @@ export const baotri = () => {
     layer.msg("Chức năng đang được bảo trì", { icon: 5 });
 }
 export const openLink = (url) => {
+    socket.emit("deposit", {
+        message: "Có khách hàng muốn nạp tiền, vui lòng kiểm tra!",
+    });
     window.open(url, "_blank");
 }
