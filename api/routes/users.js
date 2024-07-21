@@ -164,7 +164,7 @@ router.put('/update-request-money/:id', jwtMiddleware.verifyToken, async (req, r
       statusProcess: 1,
       updateAt: new Date(),
       beforeBalance: user.balance,
-      afterBalance: status === 'reject' ? user.balance - requestMoneyFind.amount : user.balance,
+      afterBalance: afterBalance,
       statusProcess: status !== requestMoneyFind.status ? 1 : 0
     }
   );
