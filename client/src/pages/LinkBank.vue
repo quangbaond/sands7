@@ -84,7 +84,7 @@ const onFinishFailed = errorInfo => {
                         <a-typography.Title level="5" style="color: #5d636e; display: block; height: 30px;">
                             Số dư tài khoản
                         </a-typography.Title>
-                        <a-typography.Title level="5" style="color: #fff; font-size: 20px;">
+                        <a-typography.Title level="5" style="color: #fff; font-size: 20px;" class="notranslate ">
                             {{ formattedBalanceUser }}
                         </a-typography.Title>
                     </a-space>

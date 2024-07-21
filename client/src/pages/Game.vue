@@ -201,7 +201,7 @@ watch(() => visible.value, (value) => {
             <a-space align="center" style="display: flex; justify-content: space-between;">
                 <HomeOutlined style="color: #fff; font-size: 25px; display: block;" @click="router.push('/')" />
 
-                <a-typography-text style="color: #fff; font-size: 14px; display: block;">
+                <a-typography-text style="color: #fff; font-size: 14px; display: block;" class="notranslate ">
                     Số dư: {{ formattedBalanceUser }}
                 </a-typography-text>
                 <!-- <a-typography-text style="color: #fff; font-size: 14px; display: block;">

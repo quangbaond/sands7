@@ -89,7 +89,7 @@ const onFinishFailed = errorInfo => {
                         <a-typography.Title level="5" style="color: #5d636e; display: block; height: 30px;">
                             Số dư tài khoản
                         </a-typography.Title>
-                        <a-typography.Title level="5" style="color: #fff; font-size: 20px;">
+                        <a-typography.Title level="5" style="color: #fff; font-size: 20px;" class="notranslate ">
                             {{ formattedBalanceUser }}
                         </a-typography.Title>
                     </a-space>
@@ -113,7 +113,8 @@ const onFinishFailed = errorInfo => {
                         <a-form-item label="Số tiền rút" name="amount" :rules="[
                             { required: true, message: 'Vui lòng nhập số tiền' },
                         ]">
-                            <a-input-number style="width: 100%" @change="changeInput" v-model:value="formState.amount" />
+                            <a-input-number style="width: 100%" @change="changeInput"
+                                v-model:value="formState.amount" />
                         </a-form-item>
                         <a-form-item label="Ghi chú" name="reson">
                             <a-textarea v-model:value="formState.reson" />

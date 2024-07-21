@@ -97,7 +97,8 @@ onMounted(() => {
                             Chào mừng, <b class="notranslate ">{{ user.username }}</b>
                         </a-typography-text>
                         <a-typography-text>
-                            Số dư, <span style="color: #fff; font-size: 20px;">{{ formattedBalanceUser }}</span>
+                            Số dư, <span style="color: #fff; font-size: 20px;" class="notranslate ">{{
+                                formattedBalanceUser }}</span>
                         </a-typography-text>
                     </a-space>
                     <a-space align="center" size="large">
