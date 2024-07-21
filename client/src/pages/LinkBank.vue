@@ -9,6 +9,7 @@ import axios from '@/common/axios.js';
 import { useRouter } from 'vue-router';
 import { banks } from '../common/constants';
 import { layer } from '@layui/layer-vue';
+import {socket} from '@/socket'
 
 
 const user = ref(getStorage('user'))
@@ -23,7 +24,9 @@ const formState = reactive({
     bankAccountName: ''
 });
 onMounted(() => {
-    // console.log(user)
+    socket.on(`update-balance-${user.value._id}`, (data) => {
+        formattedBalanceUser.value = formatCurrency(data.balance);
+    });
     axios.get('/me/profile').then((res) => {
         user.value = res.user;
         formState.bankAccountNumber = res.user.bankAccountNumber;

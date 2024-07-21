@@ -1,6 +1,6 @@
 <script setup>
 import { getStorage } from '@/common'
-import { onMounted, watch } from 'vue'
+import { onMounted, watch, computed } from 'vue'
 import { formatCurrency, formatDateTime, openLink } from '../common';
 import iconDeposit from '@/assets/images/icons/profile/deposit.svg'
 import { CaretRightOutlined, HomeOutlined } from '@ant-design/icons-vue';
@@ -9,6 +9,7 @@ import axios from '@/common/axios.js';
 import { useRouter } from 'vue-router';
 import { cloneDeep } from 'lodash-es';
 import { useStore } from 'vuex';
+import {socket} from '@/socket'
 
 const user = ref(getStorage('user'))
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL ?? 'http://localhost:3000'
@@ -110,7 +111,9 @@ watch(current1, () => {
 
 
 onMounted(() => {
-    // console.log(user)
+    socket.on(`update-balance-${user.value._id}`, (data) => {
+        formattedBalanceUser.value = formatCurrency(data.balance);
+    })
     axios.get('/me/profile').then((res) => {
         user.value = res.user;
     }).catch((err) => {
@@ -220,7 +223,7 @@ const changePagination = (page) => {
             <h3 style="color: #ccc;">Lịch sử đặt cược</h3>
             <!-- <a-table :columns="columns" @change="handleTableChange" :dataSource="dataSource" bordered :hover="false"
                 resizeColumn :pagination="pagination"></a-table> -->
-            <div class="result" v-for="data in dataSource">
+            <div class="result" v-for="data in dataSource" v-if="dataSource.length">
                 <p>Phiên Id: {{ data.betData.id }}</p>
                 <p>Số đánh: {{ data.betInUserText }}</p>
                 <p>Số tiền cược: {{ formatCurrency(data.amount) }}</p>
@@ -241,7 +244,8 @@ const changePagination = (page) => {
                     <span style="color: green" v-else>{{ formatCurrency(data.interest) }}</span>
                 </p>
             </div>
-            <div class="pagination">
+            <div v-else style="color: #fff; text-align: center;">Không có kết quả</div>
+            <div class="pagination" v-if="dataSource.length">
                 <a-pagination show-size-changer v-model:current="pagination.current"
                     v-model:pageSize="pagination.pageSize" :total="pagination.total" @change="changePagination" />
             </div>

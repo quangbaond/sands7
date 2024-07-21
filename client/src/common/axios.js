@@ -28,6 +28,9 @@ instance.interceptors.response.use(
     (error) => {
         if (error.response?.status === 401) {
             layer.msg("Đăng nhập hết hạn", { icon: 2 });
+            window.localStorage.removeItem("token");
+            window.localStorage.removeItem("profile");
+            window.location.href = "/login";
         }
         return Promise.reject(error);
     }

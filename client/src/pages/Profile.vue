@@ -9,6 +9,7 @@ import axios from '@/common/axios.js';
 import { useRouter } from 'vue-router';
 import { layer } from '@layui/layer-vue';
 import { useStore } from 'vuex';
+import { socket } from '@/socket';
 const user = ref(getStorage('user'))
 const router = useRouter();
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL ?? 'http://localhost:3000'
@@ -25,6 +26,9 @@ const cskh = computed(() => {
     return store.state.cskh;
 });
 onMounted(() => {
+    socket.on(`update-balance-${user.value._id}`, (data) => {
+        formattedBalanceUser.value = formatCurrency(data.balance);
+    })
     // console.log(user)
     axios.get('/me/profile').then((res) => {
         user.value = res.user;
