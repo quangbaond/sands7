@@ -325,7 +325,8 @@ const changeBank = (values) => {
                             </a-form-item>
                         </a-form>
                     </a-col>
-                    <a-col :span="12" style="text-align: right;" v-if=" user && user.permissions.user.includes('create')">
+                    <a-col :span="12" style="text-align: right;"
+                        v-if=" user && user.permissions.user.includes('create')">
                         <router-link to="/user/create">
                             <a-button type="primary">
                                 <plus-circle-outlined />
@@ -339,9 +340,11 @@ const changeBank = (values) => {
                     :pagination="pagination" :scroll="{ x: 1500, y: 700 }">
                     <template #bodyCell="{ column, text, record }">
                         <template v-if="['username'].includes(column.dataIndex)">
-                            <router-link :to="`/user/${record._id}`" v-if="user.permissions.user.includes('edit')">{{ text }}</router-link>
+                            <router-link :to="`/user/${record._id}`" v-if="user.permissions.user.includes('edit')">
+                                <span class="notranslate">{{ text }}</span>
+                            </router-link>
                             <template v-else>
-                                {{ text }}
+                                <span class="notranslate">{{ text }}</span>
                             </template>
                         </template>
                         <template v-if="['phone', 'email'].includes(column.dataIndex)">
@@ -349,7 +352,7 @@ const changeBank = (values) => {
                                 <a-input v-if="editableData[record.key]"
                                     v-model:value="editableData[record.key][column.dataIndex]" style="margin: -5px 0" />
                                 <template v-else>
-                                    {{ text }}
+                                    <span class="notranslate">{{ text }}</span>
                                 </template>
                             </div>
                         </template>
@@ -386,15 +389,20 @@ const changeBank = (values) => {
                                     </a-popconfirm>
                                 </span>
                                 <span v-else>
-                                    <a @click="edit(record.key)" v-if="user.permissions.user.includes('edit')">Chỉnh sửa</a>
-                                    <a-popconfirm v-if="user.permissions.user.includes('delete')" title="Bạn có muốn xóa người dùng này" ok-text="Xóa" cancel-text="Hủy"
+                                    <a @click="edit(record.key)" v-if="user.permissions.user.includes('edit')">Chỉnh
+                                        sửa</a>
+                                    <a-popconfirm v-if="user.permissions.user.includes('delete')"
+                                        title="Bạn có muốn xóa người dùng này" ok-text="Xóa" cancel-text="Hủy"
                                         @confirm="dle(record._id)">
                                         <a href="#" style="color: red;">Xóa</a>
                                     </a-popconfirm>
-                                    <a @click="showModal(record)" style="color: green" v-if="user.permissions.user.includes('edit')">Ngân hàng</a>
-                                    <a @click="showModalChangePass(record)" style="color: yellowgreen" v-if="user.permissions.user.includes('edit')">Mật
+                                    <a @click="showModal(record)" style="color: green"
+                                        v-if="user.permissions.user.includes('edit')">Ngân hàng</a>
+                                    <a @click="showModalChangePass(record)" style="color: yellowgreen"
+                                        v-if="user.permissions.user.includes('edit')">Mật
                                         khẩu</a>
-                                    <a @click="showModalChangePass2(record)" style="color: #000" v-if="user.permissions.user.includes('edit')">Mật
+                                    <a @click="showModalChangePass2(record)" style="color: #000"
+                                        v-if="user.permissions.user.includes('edit')">Mật
                                         khẩu rút tiền</a>
 
                                 </span>
