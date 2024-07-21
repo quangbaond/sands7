@@ -46,6 +46,15 @@ const columns = [
 
     },
     {
+        title: 'Trạng thái sử lý',
+        dataIndex: 'statusProcess',
+        key: 'statusProcess',
+        customRender: (text) => {
+            return text.text == 0 ? 'Đang chờ' : 'Đã xử lý'
+        }
+
+    },
+    {
         title: 'Tạo ngày',
         dataIndex: 'createAt',
         key: 'createAt',
