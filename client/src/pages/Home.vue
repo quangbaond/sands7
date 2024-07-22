@@ -56,7 +56,7 @@ const slider = [
 const store = useStore()
 const user = computed(() => store.state.profile)
 console.log(user.value);
-const formattedBalanceUser = ref(formatCurrency(user.value.balance));
+// const formattedBalanceUser = ref(formatCurrency(user.value.balance));
 const urlCskh = computed(() => {
     return store.state.cskh;
 });
@@ -66,6 +66,13 @@ const router = useRouter();
 onMounted(() => {
     socket.on(`update-balance-${user.value._id}`, (data) => {
         formattedBalanceUser.value = formatCurrency(data.balance);
+    })
+
+    axios.get('/me/profile').then(res => {
+        user.value = res.user;
+        formattedBalanceUser(res.user.balance);
+    }).catch(err => {
+        console.log(err);
     })
 })
 
