@@ -70,7 +70,7 @@ onMounted(() => {
 
     axios.get('/me/profile').then(res => {
         user.value = res.user;
-        formattedBalanceUser(res.user.balance);
+        formattedBalanceUser.value = formatCurrency(user.value.balance);
     }).catch(err => {
         console.log(err);
     })
