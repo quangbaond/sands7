@@ -48,7 +48,7 @@ const updateData = (data) => {
 
     return data.map((item) => {
         // Trích xuất username
-        const username = item.user.username;
+        const username = item?.user?.username;
 
         const idToMessage = ["số đầu tiên", "số thứ hai", "số thứ ba", "số thứ tư", "số thứ năm"];
 
@@ -109,6 +109,7 @@ const run = async (params = {}) => {
     console.log(data);
     const res = await axios.get(`/history/get/${gameCode}`, { params: data });
     const dataUpdate = updateData(res.docs);
+    console.log(dataUpdate);
     dataSource2.value = cloneDeep(dataUpdate);
     pagination.value = {
         ...pagination.value,
