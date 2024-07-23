@@ -68,12 +68,13 @@ const updateData = (data) => {
 
         // Trả về đối tượng mới với các trường đã cập nhật
         // Returns a new object with updated fields
+        console.log(item);
         return {
             ...item,
-            resultSession: item.betData.betData.join(','),
+            resultSession: item?.betData ? item.betData.betData.join(',') : '',
             username: username,
             betInUserText: finalMessage,
-            id: item.betData.id,
+            id: item?.betData ? item.betData.id : '',
         };
     });
 };
