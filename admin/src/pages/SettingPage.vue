@@ -40,6 +40,10 @@ const formState = ref({
     value: '',
 });
 
+const formStateAll = ref({
+    value: '1.98',
+});
+
 const dataSource = ref([
     {
         name: 'game',
@@ -169,6 +173,24 @@ const dle = (id) => {
     });
 }
 
+const onFinishAll = (values) => {
+    console.log('Success:', values);
+    const loading = layer.load(2);
+    axios.post('/setting/update-all', values).then((res) => {
+        console.log(res);
+        run({
+            ...pagination.value,
+            current: 1,
+        });
+        layer.msg('Cập nhật thành công', { icon: 1 });
+    }).catch((err) => {
+        console.log(err);
+        layer.msg(err.response.data.message, { icon: 2 });
+    }).finally(() => {
+        layer.close(loading);
+    });
+}
+
 </script>
 <template>
     <a-layout>
@@ -176,17 +198,38 @@ const dle = (id) => {
         <a-layout-content style="padding: 20px 50px">
             <div :style="{ background: '#fff', padding: '12px', minHeight: 'calc(100vh - 170px)' }">
                 <h3>Cài đặt</h3>
-                <a-form layout="vertical" :model="formState" autocomplete="off" @finish="onFinish">
-                    <a-form-item v-model:value="formState.username">
-                        <a-input-search @search="search" placeholder="Tìm kiếm" :loading="loading" enter-button />
-                    </a-form-item>
-                    <a-form-item v-model:value="formState.value">
-                        <a-select v-model:value="formState.value" placeholder="Chọn giá trị">
-                            <a-select-option value="1.98">1.98</a-select-option>
-                            <a-select-option value="2.1">2.1</a-select-option>
-                        </a-select>
-                    </a-form-item>
-                </a-form>
+                <a-row gutter="10">
+                    <a-col :span="12">
+                        <a-form layout="vertical" :model="formState" autocomplete="off" @finish="onFinish">
+                            <a-form-item v-model:value="formState.username">
+                                <a-input-search @search="search" placeholder="Tìm kiếm" :loading="loading"
+                                    enter-button />
+                            </a-form-item>
+                            <a-form-item v-model:value="formState.value">
+                                <a-select v-model:value="formState.value" placeholder="Chọn giá trị">
+                                    <a-select-option value="1.98">1.98</a-select-option>
+                                    <a-select-option value="2.1">2.1</a-select-option>
+                                </a-select>
+                            </a-form-item>
+                        </a-form>
+                    </a-col>
+                    <a-col :span="12">
+                        <a-form layout="vertical" :model="formStateAll" autocomplete="off" @finish="onFinishAll">
+                            <a-form-item name="value">
+                                <a-select v-model:value="formStateAll.value" placeholder="Chọn giá trị">
+                                    <a-select-option value="1.98">1.98</a-select-option>
+                                    <a-select-option value="2.1">2.1</a-select-option>
+                                </a-select>
+                            </a-form-item>
+                            <!-- // button submit -->
+                            <a-form-item>
+                                <a-button style="width: 100%;" type="primary" html-type="submit">Cập nhật tất cả</a-button>
+                            </a-form-item>
+                        </a-form>
+                    </a-col>
+
+                </a-row>
+
                 <a-table :columns="columns" :dataSource="dataSource" :pagination="pagination" :loading="loading"
                     @change="handelChangeTable">
                     <template #bodyCell="{ column, text, record }">
@@ -221,7 +264,8 @@ const dle = (id) => {
                             <div class="editable-row-operations">
                                 <span v-if="editableData[record.key]">
                                     <div>
-                                        <a-typography-link style="color: green;" @click="save(record.key)">Lưu</a-typography-link>
+                                        <a-typography-link style="color: green;"
+                                            @click="save(record.key)">Lưu</a-typography-link>
                                     </div>
                                     <div>
                                         <a-popconfirm title="Bạn có muốn hủy thao thác?" @confirm="cancel(record.key)">

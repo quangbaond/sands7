@@ -110,4 +110,17 @@ router.delete('/:id', jwtMiddleware.verifyTokenAdmin, async (req, res, next) => 
 
 });
 
+router.post('/update-all', jwtMiddleware.verifyTokenAdmin, async (req, res, next) => {
+    const { value } = req.body;
+    console.log(value);
+
+    if (!value) {
+        return res.status(400).json({ message: 'Value is required' });
+    }
+
+    await settings.updateMany({}, { value });
+
+    res.status(200).json({ message: 'Updated all settings' });
+})
+
 module.exports = router;

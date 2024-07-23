@@ -79,9 +79,7 @@ const updateData = (data) => {
     });
 };
 const changeTab = (e) => {
-    if (e == 2) {
-        axios.get(`/history/get/${gameCode}`).then((res) => {
-
+        axios.get(`/history/get`).then((res) => {
             const data = updateData(res.docs);
             console.log(data);
             dataSource2.value = cloneDeep(data);
@@ -97,8 +95,6 @@ const changeTab = (e) => {
         }).catch((err) => {
             console.log(err);
         });
-    }
-
 }
 const dataSource2 = ref([]);
 
@@ -108,7 +104,7 @@ const run = async (params = {}) => {
         gameCode: gameCode,
     }
     console.log(data);
-    const res = await axios.get(`/history/get/${gameCode}`, { params: data });
+    const res = await axios.get(`/history/get`, { params: data });
     const dataUpdate = updateData(res.docs);
     console.log(dataUpdate);
     dataSource2.value = cloneDeep(dataUpdate);
@@ -193,6 +189,16 @@ const columns2 = [
         key: 'betInUserText',
     },
     {
+        title: 'Số đặt cược',
+        dataIndex: 'betInUserText',
+        key: 'betInUserText',
+    },
+    {
+        title: 'Tên game',
+        dataIndex: 'code',
+        key: 'code',
+    },
+    {
         title: 'kết quả phiên',
         dataIndex: 'resultSession',
         key: 'resultSession',
@@ -218,32 +224,10 @@ const pagination = ref({
 onMounted(() => {
     axios('/me/profile').then((res) => {
         user.value = res.user;
-        socket.on(gameCode, async (dataBet) => {
-            betDataOnServer.value = dataBet
-        })
-        socket.on('controllgameResponse', async (data) => {
-            console.log(data);
-            if (data.status === 'success') {
-                layer.msg('Cập nhật thành công', {
-                    icon: 1,
-                    time: 3000,
-                });
-                console.log(data.data);
-                betDataOnServer.value = data.data;
-            } else {
-                layer.msg('Cập nhật thất bại', {
-                    icon: 2,
-                    time: 3000,
-                });
-            }
-        })
-        socket.on(`betDataUser-${gameCode}`, async (data) => {
-            const dataClone = cloneDeep(dataSource.value);
-            dataClone.push(data.historyBetList);
-            const dataUpdate = updateData(dataClone);
-            console.log(dataUpdate);
-            dataSource.value = dataUpdate;
-        })
+        // socket.on(gameCode, async (dataBet) => {
+        //     betDataOnServer.value = dataBet
+        // })
+        changeTab();
     }).catch((err) => {
         console.log(err);
     });
@@ -286,14 +270,15 @@ const onSearch2 = (value) => {
         <a-layout-content style="padding: 20px 50px">
 
             <div :style="{ background: '#fff', padding: '12px', minHeight: '100vh' }">
-                <h3>game {{ gameCode }}</h3>
+                <h3>Lịch sử đặt cược</h3>
 
-                <div class="game_controll" style="margin-top: 10px;">
+                <!-- <div class="game_controll" style="margin-top: 10px;">
                     <p>thời gian: {{ betDataOnServer.timeRemain }}</p>
                     <p>Kêt quả: {{ betDataOnServer.betData }}</p>
                     <div id="controll">
                         <a-form :model="formState" name="basic" :wrapper-col="{ span: 8 }" autocomplete="off"
-                            @finish="onFinish" @finishFailed="onFinishFailed" v-if="user && user.permissions.game.includes('edit')">
+                            @finish="onFinish" @finishFailed="onFinishFailed"
+                            v-if="user && user.permissions.game.includes('edit')">
                             <a-form-item label="Kết quả mới" name="betData"
                                 :rules="[{ required: true, message: 'Vui lòng nhập kết quả' }]">
                                 <a-input v-model:value="formState.betData" placeholder="1,2,3,4,5" />
@@ -310,7 +295,6 @@ const onSearch2 = (value) => {
                                 </a-table>
                             </a-tab-pane>
                             <a-tab-pane key="2" tab="Tất cả">
-                                <!-- // search -->
                                 <a-row gutter="10">
                                     <a-col :span="12">
                                         <a-input-search style="margin-bottom: 10px;" v-model:value="searchValue"
@@ -329,7 +313,20 @@ const onSearch2 = (value) => {
                         </a-tabs>
 
                     </div>
-                </div>
+                </div> -->
+                <a-row gutter="10">
+                    <a-col :span="12">
+                        <a-input-search style="margin-bottom: 10px;" v-model:value="searchValue" @search="onSearch"
+                            placeholder="Tìm kiếm người dùng" />
+                    </a-col>
+                    <a-col :span="12" style="text-align: right;">
+                        <a-input-search style="margin-bottom: 10px;" v-model:value="searchValue2" @search="onSearch2"
+                            placeholder="Tìm kiếm khác" />
+                    </a-col>
+                </a-row>
+                <a-table :scroll="{ x: 1500, y: 700 }" @change="handleTableChange" :columns="columns2"
+                    :data-source="dataSource2" bordered :pagination="pagination">
+                </a-table>
             </div>
         </a-layout-content>
         <Footer></Footer>

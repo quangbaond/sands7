@@ -36,6 +36,11 @@ const router = createRouter({
             meta: { requiresAuth: true, isAdmin: true },
         },
         {
+            path: "/history-bet",
+            component: () => import("./pages/HistoryBet.vue"),
+            meta: { requiresAuth: true, isAdmin: true },
+        },
+        {
             path: "/setting",
             component: () => import("./pages/SettingPage.vue"),
             meta: { requiresAuth: true, isAdmin: true },

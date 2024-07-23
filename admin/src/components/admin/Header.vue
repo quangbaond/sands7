@@ -49,6 +49,9 @@ onMounted(() => {
             <a-menu-item key="9" v-if="user && user.permissions.settingNoti.includes('view')">
                 <router-link to="/setting-noti">Cài đặt thông báo</router-link>
             </a-menu-item>
+            <a-menu-item key="10" v-if="user && user.permissions.game.includes('view')">
+                <router-link to="/history-bet">Lịch sử đặt cược</router-link>
+            </a-menu-item>
         </a-menu>
     </a-layout-header>
 </template>

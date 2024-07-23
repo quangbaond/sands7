@@ -161,9 +161,6 @@ const getGame = async (type = 'sx5d') => {
   a = setInterval(async () => {
     // get session bet lastest
     let session = sessions.filter(session => session.type === type);
-
-
-
     session = session[session.length - 1];
     // get session lastest
     const sessionToClient = session.toObject();
@@ -208,7 +205,8 @@ const getGame = async (type = 'sx5d') => {
 
                 if (special.length > 0) {
                   const user = await users.findOne({ _id: item.userID });
-                  let amountAItem = item.amount / item.betInUser.length;
+                  // let amountAItem = item.amount / item.betInUser.length;
+                  const balanceInUser = user.balance;
                   // let totalPrize = special.length * amountAItem * 1.98;
                   // totalPrize sẽ được tính theo tỉ lệ 5% của tổng số tiền cược và trả lại số tiền cược
                   let totalPrize = item.amount * 0.05 + item.amount;
@@ -218,12 +216,16 @@ const getGame = async (type = 'sx5d') => {
                   historyFind.win = totalPrize;
                   console.log(totalPrize - item.amount, 'totalPrize - item.amount');
                   historyFind.interest = totalPrize - item.amount;
+                  historyFind.beforeOnWin = balanceInUser;
+                  historyFind.afterOnWin = user.balance + totalPrize;
                   await historyFind.save();
                   const userData = await users.findOne({ _id: item.userID });
                   io.emit(`win-${item.userID}-${type}`, { userID: item.userID, prize: userData.balance });
                 } else if(Thua.length > 0) {
                   const user = await users.findOne({ _id: item.userID });
-                  let amountAItem = item.amount / item.betInUser.length;
+
+                  const balanceInUser = user.balance;
+                  // let amountAItem = item.amount / item.betInUser.length;
                   // let totalPrize = Thua.length * amountAItem * 1.98;
                   // tính ra 5% tổng số tiền cược
                   const totalPrize5 = item.amount * 0.05;
@@ -236,12 +238,16 @@ const getGame = async (type = 'sx5d') => {
                   historyFind.win = totalPrize5;
                   console.log(totalPrize5 - item.amount);
                   historyFind.interest = totalPrize5 - item.amount;
+                  historyFind.beforeOnWin = balanceInUser;
+                  historyFind.afterOnWin = user.balance + historyFind.amount - totalPrize5;
                   await historyFind.save();
                   const userData = await users.findOne({ _id: item.userID });
 
                   io.emit(`win-${item.userID}-${type}`, { userID: item.userID, prize: userData.balance });
                 } else {
                   const user = await users.findOne({ _id: item.userID });
+
+                  const balanceInUser = user.balance;
                   let amountAItem = item.amount / item.betInUser.length;
                   let totalPrize = winnings.length * amountAItem * 1.98;
 
@@ -250,6 +256,8 @@ const getGame = async (type = 'sx5d') => {
                   const historyFind = await historyBet.findOne({ _id: item._id });
                   historyFind.win = totalPrize;
                   historyFind.interest = totalPrize - item.amount;
+                  historyFind.beforeOnWin = balanceInUser;
+                  historyFind.afterOnWin = user.balance + totalPrize;
                   await historyFind.save();
                   const userData = await users.findOne({ _id: item.userID });
                   io.emit(`win-${item.userID}-${type}`, { userID: item.userID, prize: userData.balance });
