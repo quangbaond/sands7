@@ -10,7 +10,7 @@ const createSx5d = async (type) => {
 
     const result = num1 + num2 + num3 + num4 + num5;
     // get last bet
-    const lastBet = await Sx5d.findOne({}).sort({ createAt: -1 });
+    const lastBet = await Sx5d.findOne({type: type}).sort({ createAt: -1 });
     const bestId = lastBet ? lastBet.id + 1 : 1111111111;
 
     const sessionBet = {
