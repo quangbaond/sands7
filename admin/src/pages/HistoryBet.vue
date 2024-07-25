@@ -75,6 +75,7 @@ const updateData = (data) => {
             username: username,
             betInUserText: finalMessage,
             id: item?.betData ? item.betData.id : '',
+
         };
     });
 };
@@ -170,7 +171,7 @@ const columns2 = [
     },
     {
         title: 'Số dư trước cược',
-        dataIndex: 'balanceBefore',
+        dataIndex: 'beforeOnWin',
         key: 'beforeOnWin'
     },
     {
@@ -180,13 +181,8 @@ const columns2 = [
     },
     {
         title: 'Số dư sau cược',
-        dataIndex: 'balanceAfter',
+        dataIndex: 'afterOnWin',
         key: 'afterOnWin'
-    },
-    {
-        title: 'Số đặt cược',
-        dataIndex: 'betInUserText',
-        key: 'betInUserText',
     },
     {
         title: 'Số đặt cược',
