@@ -64,6 +64,7 @@ onMounted(() => {
             icon: 1,
             time: 1000,
         });
+        amount.value = ''
     })
 })
 
@@ -210,38 +211,38 @@ watch(() => visible.value, (value) => {
             </a-space>
         </div>
         <div class="result_wrap sticky">
-            <a-row>
-                <a-col :span="11">
+            <a-row gutter="10">
+                <a-col :span="12">
                     <a-typography-text
                         style="color: #fff; font-size: 16px; display: block; font-weight: 600; text-align: center;">
                         Kết quả mở thưởng
                     </a-typography-text>
                     <a-row span="10" style="justify-content: center;">
-                        <a-col :span="6">
+                        <a-col :span="4">
                             <a-typography-text class="result_item"
                                 style="color: #fff; font-size: 16px; display: block; text-align: center;">
                                 {{ betData[0] }}
                             </a-typography-text>
                         </a-col>
-                        <a-col :span="6">
+                        <a-col :span="4">
                             <a-typography-text class="result_item"
                                 style="color: #fff; font-size: 16px; display: block; text-align: center;">
                                 <span>{{ betData[1] }}</span>
                             </a-typography-text>
                         </a-col>
-                        <a-col :span="6">
+                        <a-col :span="4">
                             <a-typography-text class="result_item"
                                 style="color: #fff; font-size: 16px; display: block; text-align: center;">
                                 {{ betData[2] }}
                             </a-typography-text>
                         </a-col>
-                        <a-col :span="6">
+                        <a-col :span="4">
                             <a-typography-text class="result_item"
                                 style="color: #fff; font-size: 16px; display: block; text-align: center;">
                                 {{ betData[3] }}
                             </a-typography-text>
                         </a-col>
-                        <a-col :span="6">
+                        <a-col :span="4">
                             <a-typography-text class="result_item"
                                 style="color: #fff; font-size: 16px; display: block; text-align: center;">
                                 {{ betData[4] }}
@@ -264,7 +265,7 @@ watch(() => visible.value, (value) => {
                             betDataOnServer.timeRemain : 'Ngừng cược' }}</span>
                     </a-typography-text>
                 </a-col>
-                <a-col :span="2">
+                <a-col :span="1">
                     <ReloadOutlined style="color: #fff; font-size: 20px; font-weight: 900; cursor: pointer;" />
                 </a-col>
             </a-row>
@@ -709,48 +710,51 @@ watch(() => visible.value, (value) => {
     </div>
     <a-modal v-model:visible="visible" title="Lịch sử phiên" :footer="null" centered>
         <a-row style="margin-bottom: 10px;">
-            <a-col :span="8">
+            <a-col :span="12">
                 <a-typography-text
                     style="color: #fff; font-size: 16px; display: block; font-weight: 600; text-align: center;">
-                    ID
+                    Khoảng thòi gian
                 </a-typography-text>
             </a-col>
-            <a-col :span="8">
+            <a-col :span="12">
                 <a-typography-text
                     style="color: #fff; font-size: 16px; display: block; font-weight: 600; text-align: center;">
                     Số giả thưởng
                 </a-typography-text>
             </a-col>
-            <a-col :span="8">
+            <!-- <a-col :span="8">
                 <a-typography-text
                     style="color: #fff; font-size: 16px; display: block; font-weight: 600; text-align: center;">
                     Thời gian
                 </a-typography-text>
-            </a-col>
+            </a-col> -->
         </a-row>
         <a-row guuter="10" v-for="bet in historyBet" :key="bet._id" style="margin-bottom: 10px;">
-            <a-col :span="8">
+            <a-col :span="12">
                 <a-typography-text
-                    style="color: #fff; font-size: 13px; display: block; font-weight: 600; text-align: center;">
+                    style="color: #fff; font-size: 14px; display: block; font-weight: 600; text-align: center;">
                     {{ bet.betData.id }}
+                    <div>
+                        {{ moment(bet.betData.timeEnd).format('DD/MM/YYYY H:mm:ss') }}
+                    </div>
                 </a-typography-text>
             </a-col>
-            <a-col :span="8">
+            <a-col :span="12">
                 <a-row gutter="15" style="justify-content: center;">
                     <a-col :span="4" v-for="betN in bet.betData.betData" :key="betN">
                         <a-typography-text class="result_item2"
-                            style="color: #fff; font-size: 13px; display: block; text-align: center;">
+                            style="color: #fff; font-size: 14px; display: block; text-align: center;">
                             {{ betN }}
                         </a-typography-text>
                     </a-col>
                 </a-row>
             </a-col>
-            <a-col :span="8">
+            <!-- <a-col :span="8">
                 <a-typography-text
                     style="color: #fff; font-size: 13px; display: block; font-weight: 600; text-align: center;">
                     {{ moment(bet.betData.timeEnd).format('H:mm:ss') }}
                 </a-typography-text>
-            </a-col>
+            </a-col> -->
         </a-row>
     </a-modal>
 </template>
@@ -779,11 +783,15 @@ watch(() => visible.value, (value) => {
 }
 
 .result_item2 {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     background-image: linear-gradient(179deg, #13a2ba, #087c95);
-    /* margin: 5px; */
     border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    align-content: center;
 }
 
 .onBet {

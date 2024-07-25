@@ -200,7 +200,7 @@ router.post('/withdraw', jwtMiddleware.verifyToken, async (req, res, next) => {
 });
 
 router.put('/profile', jwtMiddleware.verifyToken, async (req, res, next) => {
-    const { phone, email, fullname } = req.body;
+    const { phone, email, fullname, inviteCode } = req.body;
     console.log(req.body);
     let token = req.session.token;
 
@@ -223,6 +223,7 @@ router.put('/profile', jwtMiddleware.verifyToken, async (req, res, next) => {
             if (phone) userFind.phone = phone;
             if (email) userFind.email = email;
             if (fullname) userFind.fullname = fullname;
+            if (inviteCode) userFind.inviteCode = inviteCode;
             await userFind.save();
             res.status(200).send({ message: "Cập nhật thành công", user: userFind });
         } else {

@@ -24,6 +24,7 @@ const formState = ref({
     fullname: user.value.fullname,
     email: user.value.email,
     phone: user.value.phone,
+    inviteCode: user.value.inviteCode
 })
 const store = useStore();
 const cskh = computed(() => {
@@ -42,6 +43,8 @@ onMounted(() => {
         formState.value.email = res.user.email;
         formState.value.phone = res.user.phone;
         formState.value.fullname = res.user.fullname;
+        formState.value.inviteCode = res.user.inviteCode;
+
     }).catch((err) => {
         console.log(err);
         router.push('/login');
@@ -148,6 +151,12 @@ const updateInfo = (field, value) => {
                     <a-button type="primary" @click="updateInfo('fullname', formState.fullname)"
                         style="width: 100%; margin: 10px 0;">Cập
                         nhật</a-button>
+                </a-collapse-panel>
+                <a-collapse-panel key="6" header="Mã giới thiệu">
+                    <p>Mã giới thiệu</p>
+                    <a-input v-model:value="formState.inviteCode" />
+                    <a-button type="primary" @click="updateInfo('inviteCode', formState.inviteCode)"
+                        style="width: 100%; margin: 10px 0;">Cập nhật</a-button>
                 </a-collapse-panel>
             </a-collapse>
         </div>

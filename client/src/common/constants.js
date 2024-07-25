@@ -184,5 +184,116 @@ export const banks = [
         name: "Ngân hàng Phát triển Việt Nam",
         short_name: "VDB",
         type: "Development Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Phương Đông",
+        short_name: "OCB",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Bắc Á",
+        short_name: "Bac A Bank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Việt Á",
+        short_name: "Viet A Bank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Việt Nam Thương Tín",
+        short_name: "VietBank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Bản Việt",
+        short_name: "Viet Capital Bank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Kiên Long",
+        short_name: "Kienlongbank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Hàng Hải Việt Nam",
+        short_name: "MSB",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Quốc Dân",
+        short_name: "NCB",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Việt Nam Thương Tín",
+        short_name: "VietBank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Nam Việt",
+        short_name: "NaviBank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Sài Gòn Hà Nội",
+        short_name: "SHB",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Đông Nam Á",
+        short_name: "SeABank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Liên Việt",
+        short_name: "LienVietBank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần An Phú",
+        short_name: "AnBinh Bank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Hưng Thịnh",
+        short_name: "HungThinhBank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Phú Quốc",
+        short_name: "PhuQuocBank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Sài Gòn - An Bình",
+        short_name: "SABBank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Phát triển Mê Kông",
+        short_name: "Mekong Bank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Nam Đô",
+        short_name: "NamDoBank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Đệ Nhất",
+        short_name: "FirstBank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Phương Nam",
+        short_name: "SouthernBank",
+        type: "Commercial Bank"
+    },
+    {
+        name: "Ngân hàng Thương mại Cổ phần Việt Mỹ",
+        short_name: "VietABank",
+        type: "Commercial Bank"
     }
 ];
+
