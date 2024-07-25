@@ -3,7 +3,7 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 const Schema = mongoose.Schema;
 
 const Sx5d = new Schema({
-    id: { type: String, required: true },
+    id: { type: Number, required: true },
     betData: { type: Array, required: true },
     result: { type: Number, required: true },
     big: { type: Boolean, required: true },
