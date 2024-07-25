@@ -9,9 +9,12 @@ const createSx5d = async (type) => {
     const num5 = Math.floor(Math.random() * 9);
 
     const result = num1 + num2 + num3 + num4 + num5;
+    // get last bet
+    const lastBet = await Sx5d.findOne({}).sort({ createAt: -1 });
+    const bestId = lastBet ? lastBet.id + 1 : 1111111111;
 
     const sessionBet = {
-        id: Math.floor(Math.random() * 999999999),
+        id: bestId,
         betData: [num1, num2, num3, num4, num5],
         result: result,
         big: result > 22 ? true : false,
@@ -24,7 +27,6 @@ const createSx5d = async (type) => {
         resultEven: result % 2 === 0 ? true : false,
         timeEnd: new Date(new Date().getTime() + 300000),
         // timeEnd: new Date(new Date().getTime() + 60000),
-
         type: type || 'sx5d'
     }
 
