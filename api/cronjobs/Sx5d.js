@@ -22,7 +22,7 @@ const createSx5d = async (type) => {
         bestId = 100;
     }
 
-    bestId = momment().format('DDMMYYYY') + bestId;
+    bestId = moment().format('DDMMYYYY') + bestId;
 
     const sessionBet = {
         id: bestId,
