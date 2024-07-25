@@ -35,7 +35,7 @@ router.get('/list', jwtMiddleware.verifyToken, async (req, res, next) => {
     page: parseInt(page, 10) || 1,
     limit: parseInt(limit, 10) || 10,
     sort: { createAt: -1 },
-    populate: 'historyBet'
+    populate: 'historyBet userInvited'
   }
   const query = {};
   if (req.query.username) {

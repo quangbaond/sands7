@@ -52,6 +52,19 @@ const columns = [
         key: 'email',
     },
     {
+        title: 'Mã giới thiệu',
+        dataIndex: 'inviteCode',
+        key: 'email',
+    },
+    {
+        title: 'Người giới thiệu',
+        dataIndex: 'userInvited',
+        key: 'userInvited',
+        customRender: (text) => {
+            return text.text ? text.text?.username : 'Hệ thống';
+        },
+    },
+    {
         title: 'Số dư',
         dataIndex: 'balance',
         key: 'balance',
