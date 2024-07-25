@@ -11,7 +11,18 @@ const createSx5d = async (type) => {
     const result = num1 + num2 + num3 + num4 + num5;
     // get last bet
     const lastBet = await Sx5d.findOne({type: type}).sort({ createAt: -1 });
-    const bestId = lastBet ? lastBet.id + 1 : 1111111111;
+    // lấy 3 số cuối của id
+    // tách id thành mảng và lấy 3 số cuối
+    let bestId = 100;
+    if (lastBet) {
+        bestId = parseInt(lastBet.id.toString().split('').slice(-3).join(''));
+    }
+    bestId += 1;
+    if (bestId > 999) {
+        bestId = 100;
+    }
+
+    bestId = momment().format('DDMMYYYY') + bestId;
 
     const sessionBet = {
         id: bestId,
