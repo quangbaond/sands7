@@ -182,7 +182,7 @@ const onBet = () => {
 }
 const historyBet = ref([])
 const getHistoryBet = (type) => {
-    axios.get(`/history/get/${type}`).then((res) => {
+    axios.get(`/sessions/get/${type}`).then((res) => {
         historyBet.value = res.docs
     }).catch((err) => {
         console.log(err);
@@ -713,13 +713,13 @@ watch(() => visible.value, (value) => {
             <a-col :span="12">
                 <a-typography-text
                     style="color: #fff; font-size: 16px; display: block; font-weight: 600; text-align: center;">
-                    Khoảng thòi gian
+                    Khoảng thời gian
                 </a-typography-text>
             </a-col>
             <a-col :span="12">
                 <a-typography-text
                     style="color: #fff; font-size: 16px; display: block; font-weight: 600; text-align: center;">
-                    Số giả thưởng
+                    Số giải thưởng
                 </a-typography-text>
             </a-col>
             <!-- <a-col :span="8">
@@ -733,15 +733,15 @@ watch(() => visible.value, (value) => {
             <a-col :span="12">
                 <a-typography-text
                     style="color: #fff; font-size: 14px; display: block; font-weight: 600; text-align: center;">
-                    {{ bet.betData.id }}
+                    {{ bet.id }}
                     <div>
-                        {{ moment(bet.betData.timeEnd).format('DD/MM/YYYY H:mm:ss') }}
+                        {{ moment(bet.timeEnd).format('DD/MM/YYYY H:mm:ss') }}
                     </div>
                 </a-typography-text>
             </a-col>
             <a-col :span="12">
                 <a-row gutter="15" style="justify-content: center;">
-                    <a-col :span="4" v-for="betN in bet.betData.betData" :key="betN">
+                    <a-col :span="4" v-for="betN in bet.betData" :key="betN">
                         <a-typography-text class="result_item2"
                             style="color: #fff; font-size: 14px; display: block; text-align: center;">
                             {{ betN }}

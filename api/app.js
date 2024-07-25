@@ -17,6 +17,8 @@ const settingRouter = require('./routes/settings');
 const cskhRouter = require('./routes/cskh');
 const inviteCodeRouter = require('./routes/inviteCode');
 const settingNotiRouter = require('./routes/settingNoti');
+
+const sessionsRouter = require('./routes/sessions');
 const app = express();
 
 app.use(logger('dev'));
@@ -47,5 +49,6 @@ app.use('/setting', settingRouter);
 app.use('/cskh', cskhRouter);
 app.use('/invite', inviteCodeRouter);
 app.use('/setting-noti', settingNotiRouter);
+app.use('/sessions', sessionsRouter);
 
 module.exports = app;
