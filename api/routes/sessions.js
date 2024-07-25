@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-
 const sessions = require('../models/games/Sx5d');
 
 const jwtMiddleware = require('../middleware/jwtMiddleware');
@@ -18,8 +17,9 @@ router.get('/get/:type', jwtMiddleware.verifyToken, async (req, res, next) => {
 
     const query = {
         type: type,
-        // time end > now
-        timeEnd: { $gte: new Date() }
+        // timeEnd: { $lte: new Date() }
+        // time end > time start 5p
+        timeEnd: { $gte: new Date(new Date().getTime() - 5 * 60 * 60 * 1000) }
     }
 
     const historyBetList = await sessions.paginate(query, options);
