@@ -85,6 +85,13 @@ export const banks = [
         short_name: "ACB",
         type: "Commercial Bank"
     },
+    // argibank
+    {
+        name: "Ngân hàng Thương mại Cổ phần Nông nghiệp và Phát triển Nông thôn Việt Nam",
+        short_name: "Agribank",
+        type: "Commercial Bank"
+    },
+
     {
         name: "Ngân hàng Thương mại Cổ phần Sài Gòn Thương Tín",
         short_name: "Sacombank",
