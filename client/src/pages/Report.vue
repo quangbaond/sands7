@@ -14,9 +14,9 @@ import { socket } from '@/socket';
 const user = ref(getStorage('user'))
 const router = useRouter();
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL ?? 'http://localhost:3000'
-const formattedBalanceUser = ref(formatCurrency(user.balance))
-const formattedBetTodayUser = ref(formatCurrency(user.betToday))
-const formattedWinTodayUser = ref(formatCurrency(user.balance))
+const formattedBalanceUser = ref(formatCurrency(user.value?.balance))
+const formattedBetTodayUser = ref(formatCurrency(user.value?.betToday))
+const formattedWinTodayUser = ref(formatCurrency(user.value?.balance))
 const totalOnbet = ref({
     totalOnbet: 0,
     totalWin: 0
