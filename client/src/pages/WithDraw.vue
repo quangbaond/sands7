@@ -177,4 +177,7 @@ const onFinishFailed = errorInfo => {
 label {
     color: #fff !important;
 }
+.ant-form-show-help {
+    color: #fff !important;
+}
 </style>
