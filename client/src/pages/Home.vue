@@ -56,12 +56,12 @@ const slider = [
 const store = useStore()
 const user = ref(getStorage('user'));
 
-const formattedBalanceUser = ref(formatCurrency(user.value.balance));
 const urlCskh = computed(() => {
     return store.state.cskh;
 });
 
 const router = useRouter();
+const formattedBalanceUser = ref(formatCurrency(user?.value?.balance));
 
 onMounted(() => {
     socket.on(`update-balance-${user.value._id}`, (data) => {
@@ -75,6 +75,7 @@ onMounted(() => {
         console.log(err);
     })
 })
+
 
 </script>
 
