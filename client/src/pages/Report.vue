@@ -27,7 +27,7 @@ const cskh = computed(() => {
     return store.state.cskh;
 });
 onMounted(() => {
-    socket.on(`update-balance-${user.value._id}`, (data) => {
+    socket.on(`update-balance-${user.value?._id}`, (data) => {
         formattedBalanceUser.value = formatCurrency(data.balance);
     })
     // console.log(user)
@@ -71,7 +71,7 @@ const logout = () => {
         <div class="info">
             <a-space align="center" style="display: flex; justify-content: space-around;">
                 <HomeOutlined style="color: #fff; font-size: 25px; display: block;" @click="router.push('/')" />
-                <a-avatar :size="64" :src="staticUrl + user.avatar" :alt="user.username"></a-avatar>
+                <a-avatar :size="64" :src="staticUrl + user.avatar" :alt="user.username" v-if="user"></a-avatar>
                 <a-typography.Title style="color: #fff; font-size: 18px;" class="notranslate ">{{ user.username
                     }}</a-typography.Title>
             </a-space>
