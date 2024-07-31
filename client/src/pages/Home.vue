@@ -54,8 +54,8 @@ const slider = [
 ];
 
 const store = useStore()
-const user = computed(() => store.state.profile)
-console.log(user.value);
+const user = ref(getStorage('user'));
+
 const formattedBalanceUser = ref(formatCurrency(user.value.balance));
 const urlCskh = computed(() => {
     return store.state.cskh;
