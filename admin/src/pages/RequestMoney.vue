@@ -155,7 +155,7 @@ const run = (params) => {
             return {
                 ...item,
                 key: item._id,
-                username: item.user.username,
+                username: item?.user?.username,
                 status: item.status == 'pending' ? 'Đang chờ' : item.status == 'accept' ? 'Đã chấp nhận' : 'Từ chối',
                 type: item.type == 'deposit' ? 'Nạp tiền' : 'Rút tiền',
             }

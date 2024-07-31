@@ -427,7 +427,7 @@ const changeBank = (values) => {
         </a-layout-content>
         <a-modal v-model:visible="visible" title="Chi tiết ngân hàng" @ok="handleOk" :footer="null">
             <a-form layout="vertical" :model="userAction" autocomplete="off" @finish="changeBank">
-                <a-form-item label="CHọn ngân hàng" name="bankName"
+                <a-form-item label="Chọn ngân hàng" name="bankName"
                     :rules="[{ required: true, message: 'Vui lòng chọn ngân hàng' }]">
                     <a-select v-model:value="userAction.bankName">
                         <a-select-option :value="bank.short_name" v-for="bank in banks" :key="bank.short_name">
@@ -444,11 +444,6 @@ const changeBank = (values) => {
                     { required: true, message: 'Vui lòng nhập số tài khoản' }
                 ]">
                     <a-input v-model:value="userAction.bankAccountNumber" />
-                </a-form-item>
-                <a-form-item label="Chi nhánh" name="bankBranch" :rules="[
-                    { required: true, message: 'Vui lòng nhập chi nhánh' }
-                ]">
-                    <a-input v-model:value="userAction.bankBranch" />
                 </a-form-item>
                 <a-form-item>
                     <a-button type="primary" html-type="submit">Lưu</a-button>

@@ -252,12 +252,6 @@ const changePermission = (key, value) => {
                             </a-col>
                             <a-col :span="12">
 
-                                <a-form-item label="Chi nhánh" name="bankBranch">
-                                    <a-input v-model:value="formState.bankBranch"></a-input>
-                                </a-form-item>
-                            </a-col>
-                            <a-col :span="12">
-
                                 <a-form-item label="Số tài khoản" name="bankAccountNumber">
                                     <a-input v-model:value="formState.bankAccountNumber"></a-input>
                                 </a-form-item>

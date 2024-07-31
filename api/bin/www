@@ -213,7 +213,7 @@ const getGame = async (type = 'sx5d') => {
                   user.balance += totalPrize;
                   await user.save();
                   const historyFind = await historyBet.findOne({ _id: item._id });
-                  historyFind.win = totalPrize;
+                  historyFind.win = item.amount * 0.05
                   console.log(totalPrize - item.amount, 'totalPrize - item.amount');
                   historyFind.interest = totalPrize - item.amount;
                   historyFind.beforeOnWin = balanceInUser;

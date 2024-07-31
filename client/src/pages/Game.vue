@@ -153,7 +153,7 @@ const onBet = () => {
         });
         return
     }
-    if (amount.value === '') {
+    if (amount.value === '' || amount.value === 0) {
         layer.msg('Vui lòng nhập số lượng cược', {
             icon: 2,
             time: 1000,
@@ -250,7 +250,7 @@ watch(() => visible.value, (value) => {
                         </a-col>
                     </a-row>
                 </a-col>
-                <a-col :span="11">
+                <a-col :span="12">
                     <a-typography-text
                         style="color: #fff; font-size: 16px; display: block; font-weight: 600; text-align: center;">
                         Phiên id
@@ -265,9 +265,9 @@ watch(() => visible.value, (value) => {
                             betDataOnServer.timeRemain : 'Ngừng cược' }}</span>
                     </a-typography-text>
                 </a-col>
-                <a-col :span="1">
+                <!-- <a-col :span="1">
                     <ReloadOutlined style="color: #fff; font-size: 20px; font-weight: 900; cursor: pointer;" />
-                </a-col>
+                </a-col> -->
             </a-row>
             <div
                 style="text-align: center; width: 25px; margin: auto; background-color: #0f1d30; height: 25px; display: flex; justify-content: center;">

@@ -10,6 +10,11 @@ import { useRouter } from 'vue-router';
 import { layer } from '@layui/layer-vue';
 import { useStore } from 'vuex';
 import { socket } from '@/socket';
+import iconHome from '@/assets/images/icons/home.png'
+import iconLottery from '@/assets/images/icons/lottery.svg'
+import iconHistoryBet from '@/assets/images/icons/historyBet.png'
+import iconCSKH from '@/assets/images/icons/cskh.svg'
+import iconProfile from '@/assets/images/icons/profile.png'
 const user = ref(getStorage('user'))
 const router = useRouter();
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL ?? 'http://localhost:3000'
@@ -203,7 +208,9 @@ const logout = () => {
                         </a-col>
                     </a-row>
                 </a-col>
-                <a-col :span="24" style="margin-top: 20px;">
+                <a-divider style="height: 1px; background-color: #ccc; margin: 20px 10px"></a-divider>
+
+                <a-col :span="24">
                     <a-row style="justify-content: space-around;">
                         <a-col :span="12" style="display: flex;">
                             <router-link to="/profile/info" style="display: flex;">
@@ -217,10 +224,39 @@ const logout = () => {
                             <CaretRightOutlined style="color: #fff; font-size: 23px; font-weight: bold;" />
                         </a-col>
                     </a-row>
-                    <!-- // logout -->
-
-
                 </a-col>
+                <a-col :span="24" style="margin-top: 20px;">
+                    <a-row style="justify-content: space-around;">
+                        <a-col :span="12" style="display: flex;">
+                            <router-link to="/agency" style="display: flex;">
+                                <img :src="iconDeposit" alt="" style="width: 40px; padding-right: 10px;">
+                                <a-typography.Text style="color: #fff; font-size: 16px;">
+                                    Trung tâm đại lý
+                                </a-typography.Text>
+                            </router-link>
+                        </a-col>
+                        <a-col :span="12" style="text-align: right;">
+                            <CaretRightOutlined style="color: #fff; font-size: 23px; font-weight: bold;" />
+                        </a-col>
+                    </a-row>
+                </a-col>
+
+                <a-col :span="24" style="margin-top: 20px;">
+                    <a-row style="justify-content: space-around;">
+                        <a-col :span="12" style="display: flex;">
+                            <router-link to="/report" style="display: flex;">
+                                <img :src="iconDeposit" alt="" style="width: 40px; padding-right: 10px;">
+                                <a-typography.Text style="color: #fff; font-size: 16px;">
+                                    Trung tâm báo cáo
+                                </a-typography.Text>
+                            </router-link>
+                        </a-col>
+                        <a-col :span="12" style="text-align: right;">
+                            <CaretRightOutlined style="color: #fff; font-size: 23px; font-weight: bold;" />
+                        </a-col>
+                    </a-row>
+                </a-col>
+
                 <!-- // logout -->
                 <a-col :span="24" style="margin-top: 20px;">
                     <a-row style="justify-content: space-around;">
@@ -238,6 +274,40 @@ const logout = () => {
                     </a-row>
                 </a-col>
             </a-row>
+        </div>
+        <div class="footer">
+            <a-space align="center" style="justify-content: space-between; display: flex; cursor: pointer;">
+                <a-space direction="vertical" @click="router.push('/')">
+                    <img :src="iconHome" alt="" style="width: 20px;">
+                    <a-typography-text style="color: #fff; font-size: 14px; display: block;">
+                        Trang chủ
+                    </a-typography-text>
+                </a-space>
+                <a-space direction="vertical" @click="router.push('/profile/historybet')" style="cursor: pointer;">
+                    <img :src="iconHistoryBet" alt="" style="width: 20px;">
+                    <a-typography-text style="color: #fff; font-size: 14px; display: block;">
+                        Lịch sử cược
+                    </a-typography-text>
+                </a-space>
+                <a-space direction="vertical" @click="baotri">
+                    <img :src="iconLottery" alt="" style="max-width: 20px;">
+                    <a-typography-text style="color: #fff; font-size: 14px; display: block;">
+                        Sảnh xổ số
+                    </a-typography-text>
+                </a-space>
+                <a-space direction="vertical" @click="openLink(urlCskh?.url)">
+                    <img :src="iconCSKH" alt="" style="max-width: 20px;">
+                    <a-typography-text style="color: #fff; font-size: 14px; display: block;">
+                        CSKH
+                    </a-typography-text>
+                </a-space>
+                <a-space direction="vertical" @click="router.push('/profile')" style="cursor: pointer;">
+                    <img :src="iconProfile" alt="" style="max-width: 20px;">
+                    <a-typography-text style="color: #fff; font-size: 14px; display: block;">
+                        Tôi
+                    </a-typography-text>
+                </a-space>
+            </a-space>
         </div>
 
     </div>

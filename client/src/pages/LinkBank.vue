@@ -102,17 +102,13 @@ const onFinishFailed = errorInfo => {
             </a-row>
             <a-form layout="vertical" :model="formState" autocomplete="off" @finish="onFinish"
                 @finishFailed="onFinishFailed">
-                <a-form-item label="CHọn ngân hàng" name="bankName"
+                <a-form-item label="Chọn ngân hàng" name="bankName"
                     :rules="[{ required: true, message: 'Vui lòng chọn ngân hàng' }]">
                     <a-select v-model:value="formState.bankName">
                         <a-select-option :value="bank.short_name" v-for="bank in banks" :key="bank.short_name">
                             {{ `(${bank.short_name}) ${bank.name}` }}
                         </a-select-option>
                     </a-select>
-                </a-form-item>
-                <a-form-item label="Chi nhánh" name="bankBranch"
-                    :rules="[{ required: true, message: 'Vui lòng nhập chi nhánh' }]">
-                    <a-input v-model:value="formState.bankBranch"></a-input>
                 </a-form-item>
                 <a-form-item label="Số tài khoản" name="bankAccountNumber"
                     :rules="[{ required: true, message: 'Vui lòng nhập số tài khoản' }]">
