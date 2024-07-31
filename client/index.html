@@ -4,19 +4,11 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/logo.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sands v7</title>
-    <!-- Start of LiveChat (www.livechat.com) code -->
-    <!-- End of LiveChat code -->
-
-    <!-- <link rel="icon" type="image/x-icon" href="/images/favicon.ico"> -->
+    <title class="notranslate">Sands v7</title>
     <style>
-      /* #app {
-            margin: 0;
-            max-width: 576px;
-            margin-left: auto;
-            margin-right: auto;
-            overflow-x: hidden;
-        } */
+      .notranslate {
+        unicode-bidi: isolate;
+      }
     </style>
 
   </head>
@@ -25,16 +17,10 @@
 
     <script type="module" src="/src/main.js"></script>
     <script>
-      // check change language
-      setInterval(() => {
-        // get title of page
-        let title = document.title;
-        // check if title is not equal to Sands v7
-        if (title !== 'Sands v7') {
-          // set title to Sands v7
-          document.title = 'Sands v7';
-        }
-      }, 1000);
+      // check domain
+      const hostname = window.location.hostname;
+      const name = hostname.split('.')[0];
+      document.title = name.charAt(0).toUpperCase() + name.slice(1);
     </script>
   </body>
 </html>
