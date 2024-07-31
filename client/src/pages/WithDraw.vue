@@ -17,7 +17,8 @@ const formattedBetTodayUser = ref(formatCurrency(user.betToday))
 const router = useRouter();
 const formState = reactive({
     amount: '',
-    reson: ''
+    reson: '',
+    password2: ''
 });
 onMounted(() => {
     // console.log(user)
@@ -118,6 +119,11 @@ const onFinishFailed = errorInfo => {
                         </a-form-item>
                         <a-form-item label="Ghi chú" name="reson">
                             <a-textarea v-model:value="formState.reson" />
+                        </a-form-item>
+                        <a-form-item label="Mật khẩu rút tiền" name="password2" :rules="[
+                            { required: true, message: 'Vui lòng nhập mật khẩu rút tiền' },
+                        ]" help="Nếu bạn quên mật khẩu rút tiền, vui lòng liên hệ CSKH">
+                            <a-input-password style="width: 100%" v-model:value="formState.password2" />
                         </a-form-item>
                         <a-form-item>
                             <a-button style="width:100%" type="primary" html-type="submit">Rút tiền</a-button>

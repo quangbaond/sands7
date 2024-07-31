@@ -159,7 +159,15 @@ router.post('/link-bank', jwtMiddleware.verifyToken, async (req, res, next) => {
     });
 });
 router.post('/withdraw', jwtMiddleware.verifyToken, async (req, res, next) => {
-    const { amount, reson, type } = req.body;
+    const { amount, reson, type, password2 } = req.body;
+
+    if (!amount) {
+        return res.status(400).send({ message: "Vui lòng nhập số tiền" });
+    }
+
+    if (!password2) {
+        return res.status(400).send({ message: "Vui lòng nhập mật khẩu cấp 2" });
+    }
     let token = req.session.token;
 
     if (req.headers.authorization) {
@@ -177,7 +185,11 @@ router.post('/withdraw', jwtMiddleware.verifyToken, async (req, res, next) => {
             });
         }
         const userFind = await users.findById(decoded.id);
+
         if (userFind) {
+            if (userFind.password2 !== md5(password2)) {
+                return res.status(422).send({ message: "Mật khẩu cấp 2 không đúng" });
+            }
             const newRequestMoney = new requestMoney({
                 userID: userFind._id,
                 amount: amount,
