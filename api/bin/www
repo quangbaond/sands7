@@ -228,7 +228,7 @@ const getGame = async (type = 'sx5d') => {
                   // let amountAItem = item.amount / item.betInUser.length;
                   // let totalPrize = Thua.length * amountAItem * 1.98;
                   // tính ra 5% tổng số tiền cược
-                  const totalPrize5 = item.amount * 0.01;
+                  const totalPrize5 = item.amount * 0.05;
                   // user.balance - 5% tổng số tiền cược
 
                   const historyFind = await historyBet.findOne({ _id: item._id });
