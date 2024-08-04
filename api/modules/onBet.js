@@ -24,6 +24,10 @@ const onBet = async (socket, data) => {
         await historyBet.create(historyBetData);
 
         const user = await users.findOne({ _id: userID });
+        if (user.balance < amount) {
+            socket.emit(`notMoney-${userID}`, { status: 'fail' });
+            return;
+        }
         user.balance -= amount;
 
         await user.save();

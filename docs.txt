@@ -1,0 +1,18 @@
+- chỉnh sửa file client/.env.production 
+ + VITE_API_URL="link api" 
+ + VITE_APP_STATIC_URL="link api"
+ + VITE_APP_SOCKET_URL="link api"
+
+- chỉnh sử file admin/.env.production
+  + VITE_API_URL="link api" 
+  + VITE_APP_STATIC_URL="link api"
+  + VITE_APP_SOCKET_URL="link api"
+
+- chỉnh sử file api/.env
+
+  + CLIENT_URL="link client ( người dùng )"
+  + ADMIN_URL="link admin"
+  + MONGO_URI="url mongodb"
+
+
+- admin mặc định : admin|admin123

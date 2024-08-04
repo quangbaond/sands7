@@ -56,6 +56,13 @@ onMounted(() => {
         });
     })
 
+    socket.on(`notMoney-${user.value._id}`, (data) => {
+        layer.msg('Số dư không đủ', {
+            icon: 2,
+            time: 1000,
+        });
+    })
+
     socket.on(`betDataResponse-${user.value._id}`, (data) => {
         console.log(data);
         // user.value.balance = data.balance
