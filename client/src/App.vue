@@ -7,9 +7,6 @@ axios.get('/cskh').then(res => {
   store.commit('setCskh', res);
 });
 
-axios.get('/me/profile').then(res => {
-  store.commit('setProfile', res?.user);
-})
 </script>
 
 <template>
