@@ -107,8 +107,8 @@ onMounted(() => {
                     </a-form-item>
                     <a-space align="center">
                         <a-button type="link" class="link" @click="router.push('/register')">Đăng ký</a-button>
-                        <a-button type="link" class="link" @click="openLink(cskh?.url)">CSKH</a-button>
-                        <a-button type="link" class="link" @click="openLink(cskh?.url)">Quên mật
+                        <a-button type="link" class="link" @click="openLink(urlCskh?.url)">CSKH</a-button>
+                        <a-button type="link" class="link" @click="openLink(urlCskh?.url)">Quên mật
                             khẩu</a-button>
                     </a-space>
                 </a-form>
